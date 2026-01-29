@@ -2,111 +2,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary: #6366f1; /* Indigo 500 */
-  --primary-hover: #4f46e5;
-  --secondary: #ec4899; /* Pink 500 */
-  --accent: #8b5cf6; /* Violet 500 */
-  
-  --bg-light: #f8fafc;
-  --text-light: #0f172a;
-  --card-light: #ffffff;
-  
-  --bg-dark: #0f172a;
-  --text-dark: #f1f5f9;
-  --card-dark: #1e293b;
-  
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  
+  /* New "Astral Blue" Palette */
+  --primary: #0056b3;
+  /* Deep Professional Blue */
+  --primary-dark: #004494;
+  /* Darker Blue for hover/accent */
+  --accent: #00a8cc;
+  /* Cyan/Bright Blue for highlights */
+  --secondary: #e6f0fa;
+  /* Very Light Blue for backgrounds */
+
+  --bg-light: #ffffff;
+  --bg-section: #f4f6f9;
+  /* Light Gray/Blue for alternating sections */
+
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #ffffff;
+
+  --card-bg: #ffffff;
+
   --font-main: 'Outfit', sans-serif;
-  
+
   --transition: all 0.3s ease;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 body {
   margin: 0;
   font-family: var(--font-main);
   background-color: var(--bg-light);
-  color: var(--text-light);
+  color: var(--text-main);
   transition: var(--transition);
   -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
 }
 
-body.dark-mode {
-  background-color: var(--bg-dark);
-  color: var(--text-dark);
-}
-
-/* Glassmorphism Utilities */
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-.glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: var(--transition);
-}
-
-body.dark-mode .glass-card {
-  background: rgba(30, 41, 59, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Button Styles */
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: var(--transition);
-}
-
-.btn-primary:hover {
-  filter: brightness(1.1);
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 2px solid var(--primary);
+/* Typography Overrides */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--primary);
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
+  margin-top: 0;
 }
 
-.btn-secondary:hover {
-  background: rgba(99, 102, 241, 0.1);
-}
-
-/* Container */
+/* Layout Utilities */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-/* Utilities */
 .flex-center {
   display: flex;
   align-items: center;
@@ -119,18 +69,154 @@ body.dark-mode .glass-card {
   justify-content: space-between;
 }
 
+/* Buttons - Solid Corporate Look */
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  /* Squarer buttons */
+  cursor: pointer;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  transition: var(--transition);
+  box-shadow: 0 4px 6px rgba(0, 50, 150, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 50, 150, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 10px 22px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Cards - Corporate Style */
+.service-card {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition);
+  border-top: 4px solid var(--primary);
+  /* Accent top border */
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Replaces old glass-card for backward compatibility */
+.glass-card {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid #e2e8f0;
+}
+
+/* Navbar specific overrides are handled in component or inline for now */
+
+/* Utilities */
 .text-gradient {
-  background: linear-gradient(to right, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--primary);
+  /* Fallback to solid color for cleaner look */
+}
+
+/* Helper for sections */
+.section-alt {
+  background-color: var(--bg-section);
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-zoom-in {
+  animation: zoomIn 0.8s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.delay-500 {
+  animation-delay: 0.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
 }

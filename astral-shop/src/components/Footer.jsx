@@ -1,14 +1,15 @@
 // src/components/Footer.js
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import astralLogo from "../assets/astral-logo.png";
 
 export default function Footer() {
     return (
-        <footer style={{ marginTop: 'auto', padding: '3rem 0', background: 'var(--card-dark)', color: 'var(--text-dark)' }}>
+        <footer style={{ marginTop: 'auto', padding: '4rem 0', background: '#0b2038', color: '#ffffff' }}>
             <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
 
                 {/* Brand */}
                 <div>
-                    <h2 className="text-gradient" style={{ marginBottom: '1rem' }}>ASTRAL</h2>
+                    <img src={astralLogo} alt="ASTRAL" style={{ height: '50px', objectFit: 'contain', marginBottom: '1rem' }} />
                     <p style={{ opacity: 0.8 }}>
                         1224, Mettupalayam Road, Saibaba Kovil, Coimbatore-641 011
                     </p>
@@ -39,7 +40,7 @@ export default function Footer() {
                 </div>
             </div>
 
-            <div style={{ textAlign: 'center', marginTop: '3rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)', opacity: 0.6 }}>
+            <div style={{ textAlign: 'center', marginTop: '3rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)', opacity: 0.6, fontSize: '0.9rem' }}>
                 &copy; {new Date().getFullYear()} ASTRAL Power Electronics. All rights reserved.
             </div>
         </footer>

@@ -16,8 +16,11 @@ import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+
 import Orders from "./pages/Orders";
-import Compare from "./pages/Compare";
+import Profile from "./pages/Profile";
+
+
 
 // Admin Pages
 import AdminLogin from "./admin/AdminLogin";
@@ -42,7 +45,6 @@ function App() {
                                 <Route path="/products" element={<Products />} />
                                 <Route path="/products/:id" element={<ProductDetails />} />
                                 <Route path="/cart" element={<Cart />} />
-                                <Route path="/compare" element={<Compare />} />
                                 <Route path="/admin/login" element={<AdminLogin />} />
 
                                 {/* Protected User Routes */}
@@ -54,6 +56,11 @@ function App() {
                                 <Route path="/orders" element={
                                     <ProtectedRoute>
                                         <Orders />
+                                    </ProtectedRoute>
+                                } />
+                                <Route path="/profile" element={
+                                    <ProtectedRoute>
+                                        <Profile />
                                     </ProtectedRoute>
                                 } />
 
