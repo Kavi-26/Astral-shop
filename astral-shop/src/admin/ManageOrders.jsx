@@ -42,61 +42,94 @@ export default function ManageOrders() {
     const statuses = ["Ordered", "Packed", "Shipped", "Delivered"];
 
     return (
-        <div className="container" style={{ padding: '2rem 20px' }}>
-            <h1 className="text-gradient" style={{ marginBottom: '2rem' }}>Manage Orders</h1>
+        <div className="container animate-fade-in" style={{ padding: '2rem 20px' }}>
+            <h1 style={{ marginBottom: '2rem', fontSize: '2rem' }}>Manage Orders</h1>
 
-            {loading ? <p>Loading...</p> : (
-                <div className="glass-card" style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
-                        <thead>
-                            <tr style={{ background: 'rgba(0,0,0,0.05)', textAlign: 'left' }}>
-                                <th style={{ padding: '1rem' }}>Order ID</th>
-                                <th style={{ padding: '1rem' }}>User</th>
-                                <th style={{ padding: '1rem' }}>Items</th>
-                                <th style={{ padding: '1rem' }}>Total</th>
-                                <th style={{ padding: '1rem' }}>Payment</th>
-                                <th style={{ padding: '1rem' }}>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orders.map(order => (
-                                <tr key={order.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
-                                    <td style={{ padding: '1rem', fontSize: '0.9rem' }}>{order.id}</td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <div style={{ fontWeight: 'bold' }}>{order.userEmail}</div>
-                                        <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>{order.shippingAddress}</div>
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <ul style={{ paddingLeft: '15px', margin: 0 }}>
-                                            {order.items.map((item, i) => (
-                                                <li key={i} style={{ fontSize: '0.9rem' }}>{item.quantity}x {item.name}</li>
-                                            ))}
-                                        </ul>
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>₹{order.totalAmount.toLocaleString()}</td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <span style={{
-                                            padding: '4px 8px', borderRadius: '4px',
-                                            background: order.paymentMethod === 'Online' ? '#dcfce7' : '#ffedd5',
-                                            color: order.paymentMethod === 'Online' ? '#166534' : '#9a3412',
-                                            fontSize: '0.8rem'
-                                        }}>
-                                            {order.paymentMethod}
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <select
-                                            value={order.status}
-                                            onChange={(e) => updateStatus(order.id, e.target.value)}
-                                            style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-                                        >
-                                            {statuses.map(s => <option key={s} value={s}>{s}</option>)}
-                                        </select>
-                                    </td>
+            {loading ? <div style={{ textAlign: 'center', padding: '2rem' }}>Loading Orders...</div> : (
+                <div style={{ background: 'white', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', overflow: 'hidden', border: '1px solid #f0f0f0' }}>
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '900px' }}>
+                            <thead>
+                                <tr style={{ background: 'var(--secondary)', color: 'var(--text-main)', textAlign: 'left' }}>
+                                    <th style={{ padding: '1.2rem', fontWeight: '600' }}>Order ID</th>
+                                    <th style={{ padding: '1.2rem', fontWeight: '600' }}>Customer</th>
+                                    <th style={{ padding: '1.2rem', fontWeight: '600' }}>Order Details</th>
+                                    <th style={{ padding: '1.2rem', fontWeight: '600' }}>Total & Pay</th>
+                                    <th style={{ padding: '1.2rem', fontWeight: '600' }}>Status</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {orders.map((order, index) => (
+                                    <tr key={order.id} style={{ borderBottom: index !== orders.length - 1 ? '1px solid #f0f0f0' : 'none' }}>
+                                        <td style={{ padding: '1.2rem', verticalAlign: 'top' }}>
+                                            <span style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>{order.id}</span>
+                                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                                                {order.createdAt?.toDate ? order.createdAt.toDate().toLocaleDateString() : "Just now"}
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: '1.2rem', verticalAlign: 'top' }}>
+                                            <div style={{ fontWeight: '600' }}>{order.userEmail}</div>
+                                            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px', maxWidth: '200px' }}>
+                                                {order.shippingAddress}
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: '1.2rem', verticalAlign: 'top' }}>
+                                            <ul style={{ paddingLeft: '15px', margin: 0, fontSize: '0.9rem' }}>
+                                                {order.items.map((item, i) => (
+                                                    <li key={i} style={{ marginBottom: '4px' }}>
+                                                        <span style={{ fontWeight: 'bold' }}>{item.quantity}x</span> {item.name}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </td>
+                                        <td style={{ padding: '1.2rem', verticalAlign: 'top' }}>
+                                            <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>₹{order.totalAmount.toLocaleString()}</div>
+                                            <span style={{
+                                                padding: '2px 8px', borderRadius: '4px',
+                                                background: order.paymentMethod === 'Online' ? '#dcfce7' : '#ffedd5',
+                                                color: order.paymentMethod === 'Online' ? '#166534' : '#9a3412',
+                                                fontSize: '0.75rem', fontWeight: '600', display: 'inline-block', marginTop: '6px'
+                                            }}>
+                                                {order.paymentMethod}
+                                            </span>
+                                        </td>
+                                        <td style={{ padding: '1.2rem', verticalAlign: 'top' }}>
+                                            <div style={{ position: 'relative' }}>
+                                                <select
+                                                    value={order.status}
+                                                    onChange={(e) => updateStatus(order.id, e.target.value)}
+                                                    style={{
+                                                        padding: '8px 12px',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #cbd5e1',
+                                                        background: 'white',
+                                                        fontSize: '0.9rem',
+                                                        cursor: 'pointer',
+                                                        width: '100%',
+                                                        fontWeight: '500'
+                                                    }}
+                                                >
+                                                    {statuses.map(s => <option key={s} value={s}>{s}</option>)}
+                                                </select>
+                                                {/* Visual indicator of current status color */}
+                                                <div style={{
+                                                    marginTop: '8px',
+                                                    fontSize: '0.8rem',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    color: order.status === 'Delivered' ? '#16a34a' : order.status === 'Shipped' ? '#2563eb' : 'var(--text-muted)'
+                                                }}>
+                                                    {order.status === 'Delivered' && <FaCheck />}
+                                                    Current: <span style={{ fontWeight: '600' }}>{order.status}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
         </div>
