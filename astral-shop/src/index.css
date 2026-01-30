@@ -162,13 +162,13 @@ h6 {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
+  animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
   }
 
   to {
@@ -178,13 +178,13 @@ h6 {
 }
 
 .animate-slide-up {
-  animation: slideUp 0.8s ease-out forwards;
+  animation: slideUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes zoomIn {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
 
   to {
@@ -194,7 +194,7 @@ h6 {
 }
 
 .animate-zoom-in {
-  animation: zoomIn 0.8s ease-out forwards;
+  animation: zoomIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .delay-100 {
