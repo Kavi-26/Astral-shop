@@ -86,45 +86,87 @@ export default function Orders() {
     }
 
     return (
-        <div className="container" style={{ padding: '2rem 20px' }}>
-            <h1 className="text-gradient" style={{ textAlign: 'center', marginBottom: '2rem' }}>My Orders</h1>
+        <div className="container animate-fade-in" style={{ padding: '2rem 20px', maxWidth: '1000px' }}>
+            <h1 className="text-gradient" style={{ textAlign: 'center', marginBottom: '3rem' }}>My Orders</h1>
 
             {loading ? (
-                <p style={{ textAlign: 'center' }}>Loading orders...</p>
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
+                    <div className="loader"></div>
+                </div>
             ) : orders.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '3rem', opacity: 0.6 }}>
-                    <h2>No orders found.</h2>
+                <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
+                    <div style={{ fontSize: '3rem', color: '#cbd5e1', marginBottom: '1rem' }}><FaBoxOpen /></div>
+                    <h2 style={{ color: 'var(--text-main)', marginBottom: '1rem' }}>No orders found</h2>
+                    <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>You haven't placed any orders yet.</p>
                 </div>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                     {orders.map(order => (
-                        <div key={order.id} className="glass-card" style={{ padding: '2rem' }}>
-                            <div className="flex-between" style={{ borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '1rem', marginBottom: '1rem' }}>
+                        <div key={order.id} style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
+                            {/* Order Header */}
+                            <div className="flex-between" style={{ background: '#f8fafc', padding: '1.5rem', borderBottom: '1px solid #e2e8f0' }}>
                                 <div>
-                                    <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>Order ID: {order.id}</p>
-                                    <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>Date: {order.createdAt?.toDate ? order.createdAt.toDate().toLocaleDateString() : new Date().toLocaleDateString()}</p>
+                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Order Placed</div>
+                                    <div style={{ fontWeight: '600', color: 'var(--text-main)' }}>
+                                        {order.createdAt?.toDate ? order.createdAt.toDate().toLocaleDateString() : new Date().toLocaleDateString()}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Total</div>
+                                    <div style={{ fontWeight: '600', color: 'var(--text-main)' }}>₹{order.totalAmount?.toLocaleString() ?? "0"}</div>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: getStatusColor(order.status), fontWeight: 'bold' }}>
-                                        {getStatusIcon(order.status)} {order.status}
-                                    </div>
-                                    <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginTop: '5px' }}>₹{order.totalAmount.toLocaleString()}</p>
+                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Order ID</div>
+                                    <div style={{ fontFamily: 'monospace', color: 'var(--text-main)' }}>#{order.id.slice(0, 8)}</div>
                                 </div>
                             </div>
 
-                            <div style={{ paddingLeft: '1rem' }}>
-                                {order.items.map((item, idx) => (
-                                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-                                        <span style={{ fontWeight: 'bold' }}>{item.quantity}x</span>
-                                        <span>{item.name}</span>
-                                        <span style={{ marginLeft: 'auto', opacity: 0.7 }}>₹{item.price.toLocaleString()}</span>
+                            {/* Order Body */}
+                            <div style={{ padding: '2rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '2rem', flexWrap: 'wrap' }}>
+                                    {/* Items List */}
+                                    <div style={{ flex: '1 1 500px' }}>
+                                        <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>Items</h3>
+                                        {order.items && order.items.length > 0 ? (
+                                            order.items.map((item, idx) => (
+                                                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                                                    <div style={{ width: '60px', height: '60px', borderRadius: '8px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '1px solid #e2e8f0' }}>
+                                                        {item.imageUrl ? <img src={item.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <FaBoxOpen color="#cbd5e1" />}
+                                                    </div>
+                                                    <div>
+                                                        <div style={{ fontWeight: '600', color: 'var(--text-main)' }}>{item.name}</div>
+                                                        <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Qty: {item.quantity} × ₹{item.price?.toLocaleString()}</div>
+                                                    </div>
+                                                    <div style={{ marginLeft: 'auto', fontWeight: 'bold' }}>
+                                                        ₹{((item.price || 0) * (item.quantity || 1)).toLocaleString()}
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>No items details available.</p>
+                                        )}
                                     </div>
-                                ))}
-                            </div>
 
-                            <button onClick={() => downloadInvoice(order)} className="btn-secondary" style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <FaFileDownload /> Download Invoice
-                            </button>
+                                    {/* Status & Actions */}
+                                    <div style={{ flex: '1 1 200px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                        <div style={{
+                                            padding: '1rem', borderRadius: '8px',
+                                            background: '#f0fdf4', border: '1px solid #dcfce7',
+                                            display: 'flex', alignItems: 'center', gap: '10px'
+                                        }}>
+                                            <div style={{ fontSize: '1.5rem', color: '#16a34a' }}>{getStatusIcon(order.status)}</div>
+                                            <div>
+                                                <div style={{ fontSize: '0.8rem', color: '#15803d', fontWeight: '600' }}>Status</div>
+                                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#16a34a' }}>{order.status}</div>
+                                            </div>
+                                        </div>
+
+                                        <button onClick={() => downloadInvoice(order)} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%' }}>
+                                            <FaFileDownload /> Invoice
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>

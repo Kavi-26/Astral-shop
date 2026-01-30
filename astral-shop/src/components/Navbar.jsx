@@ -55,40 +55,50 @@ export default function Navbar() {
                 </div>
 
                 {/* Links */}
+                {/* Links */}
                 <div className={`nav-links flex-center ${menuOpen ? 'active' : ''}`} style={{ gap: '2rem' }}>
-                    <Link to="/" className="nav-item" style={{ textDecoration: 'none', color: 'var(--text-main)', fontWeight: '600', fontSize: '1rem' }}>Home</Link>
-                    <Link to="/products" className="nav-item" style={{ textDecoration: 'none', color: 'var(--text-main)', fontWeight: '600', fontSize: '1rem' }}>Shop</Link>
 
+                    {/* Common Links */}
+                    <Link to="/" className="nav-item" style={{ textDecoration: 'none', color: 'var(--text-main)', fontWeight: '600', fontSize: '1rem' }}>Home</Link>
+
+                    {/* User Only Links */}
+                    {userRole !== 'admin' && (
+                        <Link to="/products" className="nav-item" style={{ textDecoration: 'none', color: 'var(--text-main)', fontWeight: '600', fontSize: '1rem' }}>Shop</Link>
+                    )}
+
+                    {/* Admin Link */}
                     {userRole === 'admin' && (
                         <Link to="/admin/dashboard" className="nav-item" style={{ textDecoration: 'none', color: 'var(--primary)', fontWeight: '700' }}>Admin Panel</Link>
                     )}
 
                     {currentUser ? (
                         <div className="flex-center" style={{ gap: '1.5rem' }}>
-                            {/* Cart Link with Icon and Badge */}
-                            <Link to="/cart" className="nav-item" style={{
-                                textDecoration: 'none',
-                                color: 'var(--text-main)',
-                                fontWeight: '600',
-                                position: 'relative',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px'
-                            }}>
-                                <FaShoppingCart size={18} />
-                                <span>Cart</span>
-                                {cartCount > 0 && (
-                                    <span style={{
-                                        position: 'absolute', top: '-8px', right: '-12px',
-                                        background: 'var(--primary)', color: 'white', borderRadius: '50%',
-                                        width: '20px', height: '20px', fontSize: '0.75rem', display: 'flex',
-                                        alignItems: 'center', justifyContent: 'center',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        {cartCount}
-                                    </span>
-                                )}
-                            </Link>
+                            {/* Cart Link (User Only) */}
+                            {userRole !== 'admin' && (
+                                <Link to="/cart" className="nav-item" style={{
+                                    textDecoration: 'none',
+                                    color: 'var(--text-main)',
+                                    fontWeight: '600',
+                                    position: 'relative',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px'
+                                }}>
+                                    <FaShoppingCart size={18} />
+                                    <span>Cart</span>
+                                    {cartCount > 0 && (
+                                        <span style={{
+                                            position: 'absolute', top: '-8px', right: '-12px',
+                                            background: 'var(--primary)', color: 'white', borderRadius: '50%',
+                                            width: '20px', height: '20px', fontSize: '0.75rem', display: 'flex',
+                                            alignItems: 'center', justifyContent: 'center',
+                                            fontWeight: 'bold'
+                                        }}>
+                                            {cartCount}
+                                        </span>
+                                    )}
+                                </Link>
+                            )}
 
                             {/* User Dropdown */}
                             {userRole !== 'admin' && (
@@ -112,45 +122,27 @@ export default function Navbar() {
                                         <FaChevronDown size={12} style={{ transition: 'transform 0.3s', transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0)' }} />
                                     </button>
 
-                                    {/* Dropdown Menu */}
+                                    {/* Dropdown content... (omitted for brevity in replacement, but logically here) */}
                                     {dropdownOpen && (
                                         <div style={{
-                                            position: 'absolute',
-                                            top: '120%',
-                                            right: 0,
-                                            background: 'white',
-                                            boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                                            borderRadius: '8px',
-                                            border: '1px solid #f0f0f0',
-                                            width: '200px',
-                                            padding: '0.5rem 0',
-                                            animation: 'fadeIn 0.2s ease-out',
-                                            zIndex: 1001
+                                            position: 'absolute', top: '120%', right: 0, background: 'white',
+                                            boxShadow: '0 10px 25px rgba(0,0,0,0.1)', borderRadius: '8px', border: '1px solid #f0f0f0',
+                                            width: '200px', padding: '0.5rem 0', animation: 'fadeIn 0.2s ease-out', zIndex: 1001
                                         }}>
                                             <Link to="/profile" onClick={() => setDropdownOpen(false)} style={{
-                                                display: 'flex', alignItems: 'center', gap: '10px',
-                                                padding: '12px 20px', textDecoration: 'none', color: 'var(--text-main)',
-                                                fontSize: '0.95rem', transition: 'background 0.2s'
-                                            }} onMouseEnter={(e) => e.target.style.background = '#f8f9fa'} onMouseLeave={(e) => e.target.style.background = 'transparent'}>
+                                                display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 20px', textDecoration: 'none', color: 'var(--text-main)', fontSize: '0.95rem'
+                                            }}>
                                                 <FaUser size={14} color="var(--text-muted)" /> My Profile
                                             </Link>
-
                                             <Link to="/orders" onClick={() => setDropdownOpen(false)} style={{
-                                                display: 'flex', alignItems: 'center', gap: '10px',
-                                                padding: '12px 20px', textDecoration: 'none', color: 'var(--text-main)',
-                                                fontSize: '0.95rem', transition: 'background 0.2s'
-                                            }} onMouseEnter={(e) => e.target.style.background = '#f8f9fa'} onMouseLeave={(e) => e.target.style.background = 'transparent'}>
+                                                display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 20px', textDecoration: 'none', color: 'var(--text-main)', fontSize: '0.95rem'
+                                            }}>
                                                 <FaBoxOpen size={14} color="var(--text-muted)" /> My Orders
                                             </Link>
-
                                             <div style={{ height: '1px', background: '#f0f0f0', margin: '0.5rem 0' }}></div>
-
                                             <button onClick={handleLogout} style={{
-                                                display: 'flex', alignItems: 'center', gap: '10px',
-                                                padding: '12px 20px', width: '100%', background: 'transparent',
-                                                border: 'none', cursor: 'pointer', color: '#e63946',
-                                                fontSize: '0.95rem', textAlign: 'left'
-                                            }} onMouseEnter={(e) => e.target.style.background = '#fff5f5'} onMouseLeave={(e) => e.target.style.background = 'transparent'}>
+                                                display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 20px', width: '100%', background: 'transparent', border: 'none', cursor: 'pointer', color: '#e63946', fontSize: '0.95rem'
+                                            }}>
                                                 <FaPowerOff size={14} /> Logout
                                             </button>
                                         </div>
@@ -158,7 +150,7 @@ export default function Navbar() {
                                 </div>
                             )}
 
-                            {/* Admin standalone logout (if needed, or just use the same dropdown logic) */}
+                            {/* Admin standalone logout */}
                             {userRole === 'admin' && (
                                 <button onClick={handleLogout} className="btn-secondary" style={{ padding: '5px 15px', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                     <FaPowerOff /> Logout

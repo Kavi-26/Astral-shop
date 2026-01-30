@@ -27,7 +27,8 @@ import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import ManageProducts from "./admin/ManageProducts";
 import ManageOrders from "./admin/ManageOrders";
-import CustomerManagement from "./admin/CustomerManagement"; // Assuming this exists or is part of Dashboard
+import CustomerManagement from "./admin/CustomerManagement";
+import Reports from "./admin/Reports";
 
 function App() {
     return (
@@ -83,6 +84,11 @@ function App() {
                                 <Route path="/admin/customers" element={
                                     <ProtectedRoute adminOnly={true}>
                                         <CustomerManagement />
+                                    </ProtectedRoute>
+                                } />
+                                <Route path="/admin/reports" element={
+                                    <ProtectedRoute adminOnly={true}>
+                                        <Reports />
                                     </ProtectedRoute>
                                 } />
                             </Routes>

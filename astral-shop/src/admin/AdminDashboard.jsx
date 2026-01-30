@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { db } from "../firebase/firebaseConfig";
 import { collection, onSnapshot, query, orderBy, limit } from "firebase/firestore";
-import { FaBoxOpen, FaUsers, FaShoppingCart, FaChartLine, FaArrowRight } from "react-icons/fa";
+import { FaBoxOpen, FaUsers, FaShoppingCart, FaChartLine, FaArrowRight, FaFileAlt } from "react-icons/fa";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 export default function AdminDashboard() {
@@ -77,96 +77,148 @@ export default function AdminDashboard() {
         { title: "Total Revenue", value: `₹${stats.revenue.toLocaleString()}`, icon: <FaChartLine />, color: "#8b5cf6", bg: "#ede9fe" }
     ];
 
+    // Active Tab State for Sidebar Navigation logic (simulated for now, or using real routing if preferred, staying simple with current routing structure)
+    // For a cleaner approach, sidebar links will just be standard Links to separate pages. 
+    // Ideally, we would have a layout wrapper, but we can style this page to look like a full panel.
+
     if (loading) return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Loading Dashboard...</div>;
 
     return (
-        <div className="container animate-fade-in" style={{ padding: '2rem 20px' }}>
-            <h1 style={{ marginBottom: '2rem', fontSize: '2rem' }}>Admin Dashboard</h1>
-
-            {/* Overview Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
-                {statCards.map((stat, idx) => (
-                    <div key={idx} style={{
-                        background: 'white',
-                        padding: '1.5rem',
-                        borderRadius: '12px',
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                        border: '1px solid #f0f0f0'
-                    }} className="animate-slide-up">
-                        <div style={{ padding: '1rem', borderRadius: '10px', background: stat.bg, color: stat.color, fontSize: '1.5rem', display: 'flex' }}>
-                            {stat.icon}
-                        </div>
-                        <div>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '4px' }}>{stat.title}</p>
-                            <h2 style={{ fontSize: '1.8rem', margin: 0, color: 'var(--text-main)' }}>{stat.value}</h2>
-                        </div>
-                    </div>
-                ))}
+        <div style={{ display: 'flex', minHeight: 'calc(100vh - 80px)', background: '#f8fafc' }}>
+            {/* Sidebar (Visual separation) */}
+            <div style={{
+                width: '260px',
+                background: 'white',
+                borderRight: '1px solid #e2e8f0',
+                padding: '2rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                position: 'sticky',
+                top: '80px',
+                height: 'calc(100vh - 80px)'
+            }}>
+                <div style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 'bold', marginBottom: '0.5rem', letterSpacing: '0.5px' }}>
+                    Main Menu
+                </div>
+                <Link to="/admin/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', background: 'var(--secondary)', color: 'var(--primary)', borderRadius: '8px', textDecoration: 'none', fontWeight: '600' }}>
+                    <FaChartLine /> Dashboard
+                </Link>
+                <Link to="/admin/products" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', color: 'var(--text-main)', borderRadius: '8px', textDecoration: 'none', fontWeight: '500', transition: 'background 0.2s' }} onMouseEnter={e => e.target.style.background = '#f1f5f9'} onMouseLeave={e => e.target.style.background = 'transparent'}>
+                    <FaBoxOpen /> Products
+                </Link>
+                <Link to="/admin/orders" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', color: 'var(--text-main)', borderRadius: '8px', textDecoration: 'none', fontWeight: '500', transition: 'background 0.2s' }} onMouseEnter={e => e.target.style.background = '#f1f5f9'} onMouseLeave={e => e.target.style.background = 'transparent'}>
+                    <FaShoppingCart /> Orders
+                </Link>
+                <Link to="/admin/customers" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', color: 'var(--text-main)', borderRadius: '8px', textDecoration: 'none', fontWeight: '500', transition: 'background 0.2s' }} onMouseEnter={e => e.target.style.background = '#f1f5f9'} onMouseLeave={e => e.target.style.background = 'transparent'}>
+                    <FaUsers /> Customers
+                </Link>
+                <Link to="/admin/reports" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', color: 'var(--text-main)', borderRadius: '8px', textDecoration: 'none', fontWeight: '500', transition: 'background 0.2s' }} onMouseEnter={e => e.target.style.background = '#f1f5f9'} onMouseLeave={e => e.target.style.background = 'transparent'}>
+                    <FaFileAlt /> Reports
+                </Link>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+            {/* Main Content Area */}
+            <div style={{ flex: 1, padding: '2rem 3rem' }}>
+                <h1 style={{ marginBottom: '2rem', fontSize: '2rem', color: 'var(--text-main)' }}>Dashboard Overview</h1>
 
-                {/* Analytics Chart */}
-                <div style={{ background: 'white', padding: '2rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', border: '1px solid #f0f0f0' }}>
-                    <h3 style={{ marginBottom: '1.5rem' }}>Revenue Analytics (Last 7 Days)</h3>
-                    <div style={{ height: '300px', width: '100%' }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={chartData}>
-                                <CartesianGrid strokeDasharray="3 3" opacity={0.3} vertical={false} />
-                                <XAxis dataKey="name" stroke="var(--text-muted)" tickLine={false} axisLine={false} dy={10} />
-                                <YAxis stroke="var(--text-muted)" tickLine={false} axisLine={false} />
-                                <Tooltip
-                                    cursor={{ fill: 'transparent' }}
-                                    contentStyle={{ background: '#1e293b', borderRadius: '8px', border: 'none', color: 'white' }}
-                                />
-                                <Bar dataKey="sales" fill="var(--primary)" radius={[4, 4, 0, 0]} barSize={40} />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-
-                {/* Recent Orders Preview */}
-                <div style={{ background: 'white', padding: '2rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', border: '1px solid #f0f0f0' }}>
-                    <div className="flex-between" style={{ marginBottom: '1.5rem' }}>
-                        <h3 style={{ margin: 0 }}>Recent Orders</h3>
-                        <Link to="/admin/orders" style={{ color: 'var(--primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.9rem', fontWeight: '600' }}>
-                            View All <FaArrowRight size={12} />
-                        </Link>
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        {recentOrders.length === 0 ? <p style={{ color: 'var(--text-muted)' }}>No recent orders.</p> : recentOrders.map(order => (
-                            <div key={order.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #f0f0f0' }}>
-                                <div>
-                                    <p style={{ fontWeight: '600', fontSize: '0.95rem', marginBottom: '2px' }}>{order.userEmail?.split('@')[0] || "User"}</p>
-                                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{order.id.slice(0, 8)}...</p>
-                                </div>
-                                <div style={{ textAlign: 'right' }}>
-                                    <p style={{ fontWeight: 'bold' }}>₹{order.totalAmount?.toLocaleString()}</p>
-                                    <span style={{
-                                        fontSize: '0.75rem',
-                                        padding: '2px 8px',
-                                        borderRadius: '10px',
-                                        background: order.status === 'Delivered' ? '#dcfce7' : '#fee2e2',
-                                        color: order.status === 'Delivered' ? '#166534' : '#991b1b'
-                                    }}>
-                                        {order.status}
-                                    </span>
-                                </div>
+                {/* Overview Cards */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+                    {statCards.map((stat, idx) => (
+                        <div key={idx} style={{
+                            background: 'white',
+                            padding: '1.5rem',
+                            borderRadius: '16px',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1.2rem',
+                            border: '1px solid #f1f5f9'
+                        }}>
+                            <div style={{
+                                padding: '1rem', borderRadius: '12px',
+                                background: stat.bg, color: stat.color,
+                                fontSize: '1.5rem', display: 'flex',
+                                boxShadow: '0 4px 6px -2px rgba(0,0,0,0.05)'
+                            }}>
+                                {stat.icon}
                             </div>
-                        ))}
+                            <div>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '4px', fontWeight: '500' }}>{stat.title}</p>
+                                <h2 style={{ fontSize: '1.8rem', margin: 0, color: 'var(--text-main)', fontWeight: '700' }}>{stat.value}</h2>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1.5fr', gap: '2rem' }}>
+                    {/* Analytics Chart */}
+                    <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', border: '1px solid #f1f5f9' }}>
+                        <h3 style={{ marginBottom: '2rem', color: 'var(--text-main)' }}>Revenue Trends</h3>
+                        <div style={{ height: '320px', width: '100%' }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={chartData}>
+                                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} vertical={false} />
+                                    <XAxis dataKey="name" stroke="var(--text-muted)" tickLine={false} axisLine={false} dy={10} style={{ fontSize: '0.8rem' }} />
+                                    <YAxis stroke="var(--text-muted)" tickLine={false} axisLine={false} style={{ fontSize: '0.8rem' }} />
+                                    <Tooltip
+                                        cursor={{ fill: '#f8fafc' }}
+                                        contentStyle={{ background: '#1e293b', borderRadius: '8px', border: 'none', color: 'white', fontSize: '0.9rem' }}
+                                    />
+                                    <Bar dataKey="sales" fill="var(--primary)" radius={[6, 6, 0, 0]} barSize={50} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+
+                    {/* Recent Orders Preview */}
+                    <div style={{ background: 'white', padding: '2rem', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', border: '1px solid #f1f5f9' }}>
+                        <div className="flex-between" style={{ marginBottom: '1.5rem' }}>
+                            <h3 style={{ margin: 0, color: 'var(--text-main)' }}>Recent Orders</h3>
+                            <Link to="/admin/orders" style={{
+                                color: 'var(--primary)', textDecoration: 'none',
+                                display: 'flex', alignItems: 'center', gap: '6px',
+                                fontSize: '0.85rem', fontWeight: '600',
+                                background: 'var(--secondary)', padding: '6px 12px', borderRadius: '20px'
+                            }}>
+                                View All <FaArrowRight size={10} />
+                            </Link>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                            {recentOrders.length === 0 ? <p style={{ color: 'var(--text-muted)', fontStyle: 'italic', padding: '1rem', textAlign: 'center' }}>No recent orders.</p> : recentOrders.map(order => (
+                                <div key={order.id} style={{
+                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                    padding: '12px', borderRadius: '10px',
+                                    transition: 'background 0.2s', border: '1px solid transparent'
+                                }} onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+                                            <FaBoxOpen size={14} />
+                                        </div>
+                                        <div>
+                                            <p style={{ fontWeight: '600', fontSize: '0.9rem', marginBottom: '2px', color: 'var(--text-main)' }}>{order.userEmail?.split('@')[0] || "User"}</p>
+                                            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace' }}>#{order.id.slice(0, 6)}</p>
+                                        </div>
+                                    </div>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <p style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--text-main)' }}>₹{order.totalAmount?.toLocaleString()}</p>
+                                        <span style={{
+                                            fontSize: '0.7rem',
+                                            padding: '2px 8px',
+                                            borderRadius: '6px',
+                                            background: order.status === 'Delivered' ? '#dcfce7' : order.status === 'Shipped' ? '#e0f2fe' : '#fee2e2',
+                                            color: order.status === 'Delivered' ? '#166534' : order.status === 'Shipped' ? '#0369a1' : '#991b1b',
+                                            fontWeight: '600'
+                                        }}>
+                                            {order.status}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                <Link to="/admin/products" className="btn-primary" style={{ textAlign: 'center', textDecoration: 'none', padding: '1rem' }}>Manage Products</Link>
-                <Link to="/admin/orders" className="btn-secondary" style={{ textAlign: 'center', textDecoration: 'none', padding: '1rem' }}>Manage Orders</Link>
-                <Link to="/admin/customers" className="btn-secondary" style={{ textAlign: 'center', textDecoration: 'none', padding: '1rem' }}>View Customers</Link>
             </div>
         </div>
     );
