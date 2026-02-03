@@ -4,7 +4,7 @@ import heroEngineer from "../assets/hero-engineer.png";
 
 export default function Home() {
     return (
-        <div className="animate-fade-in">
+        <div>
             {/* Corporate Hero Section */}
             <header style={{
                 background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)',
@@ -18,7 +18,7 @@ export default function Home() {
                 overflow: 'hidden'
             }}>
                 <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'center', position: 'relative', zIndex: 2 }}>
-                    <div style={{ textAlign: 'left' }} className="animate-slide-up">
+                    <div style={{ textAlign: 'left' }}>
                         <span style={{
                             background: 'rgba(255,255,255,0.2)',
                             padding: '5px 15px',
@@ -26,17 +26,17 @@ export default function Home() {
                             fontSize: '0.9rem',
                             fontWeight: '600',
                             letterSpacing: '1px'
-                        }} className="animate-slide-up">
+                        }}>
                             RELIABLE POWER SOLUTIONS
                         </span>
-                        <h1 style={{ fontSize: '3.5rem', fontWeight: '800', margin: '1.5rem 0', lineHeight: '1.1', color: 'white' }} className="animate-slide-up delay-100">
+                        <h1 style={{ fontSize: '3.5rem', fontWeight: '800', margin: '1.5rem 0', lineHeight: '1.1', color: 'white' }}>
                             Powering Your <br />
                             <span style={{ color: 'var(--accent)' }}>Future Today</span>
                         </h1>
-                        <p style={{ fontSize: '1.2rem', opacity: 0.9, marginBottom: '2.5rem', lineHeight: '1.6', maxWidth: '500px' }} className="animate-slide-up delay-200">
+                        <p style={{ fontSize: '1.2rem', opacity: 0.9, marginBottom: '2.5rem', lineHeight: '1.6', maxWidth: '500px' }}>
                             Astral provides top-tier power electronics including Stabilizers, UPS, and Inverters. Engineered for industrial performance and home safety.
                         </p>
-                        <div style={{ display: 'flex', gap: '1rem' }} className="animate-slide-up delay-300">
+                        <div style={{ display: 'flex', gap: '1rem' }}>
                             <Link to="/products" className="btn-primary" style={{ backgroundColor: 'white', color: 'var(--primary)', boxShadow: '0 4px 10px rgba(0,0,0,0.2)' }}>
                                 Explore Products
                             </Link>
@@ -47,7 +47,7 @@ export default function Home() {
                     </div>
 
                     {/* Hero Image Section */}
-                    <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }} className="animate-zoom-in delay-200">
+                    <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
                         <div style={{
                             position: 'relative',
                             width: '100%',
@@ -81,7 +81,7 @@ export default function Home() {
 
             {/* Services Section */}
             <section className="container" style={{ padding: '5rem 20px', marginTop: '2rem' }}>
-                <div style={{ textAlign: 'center', marginBottom: '4rem' }} className="animate-slide-up delay-300">
+                <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
                     <h4 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem' }}>Our Expertise</h4>
                     <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Premium Power Services</h2>
                     <p style={{ maxWidth: '700px', margin: '0 auto', color: 'var(--text-muted)' }}>
@@ -90,16 +90,16 @@ export default function Home() {
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
-                    <div className="animate-slide-up delay-300"><ServiceCard icon={<FaBolt />} title="Voltage Suspension" desc="Protect your appliances from sudden voltage spikes and drops with our servo stabilizers." /></div>
-                    <div className="animate-slide-up delay-400"><ServiceCard icon={<FaShieldAlt />} title="Industrial Safety" desc="Heavy-duty protection for industrial machinery ensuring zero downtime." /></div>
-                    <div className="animate-slide-up delay-500"><ServiceCard icon={<FaShippingFast />} title="Logistics & Delivery" desc="Fast, secure, and insured delivery across the nation within 3-5 business days." /></div>
+                    <div><ServiceCard icon={<FaBolt />} title="Voltage Suspension" desc="Protect your appliances from sudden voltage spikes and drops with our servo stabilizers." /></div>
+                    <div><ServiceCard icon={<FaShieldAlt />} title="Industrial Safety" desc="Heavy-duty protection for industrial machinery ensuring zero downtime." /></div>
+                    <div><ServiceCard icon={<FaShippingFast />} title="Logistics & Delivery" desc="Fast, secure, and insured delivery across the nation within 3-5 business days." /></div>
                 </div>
             </section>
 
             {/* Why Choose Us - Split Section */}
             <section style={{ background: 'var(--bg-section)', padding: '5rem 20px' }}>
                 <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
-                    <div className="animate-slide-up delay-300">
+                    <div>
                         <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>Why Choose Astral?</h2>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <BenefitRow title="24/7 Customer Support" desc="Our team is always online to help you with technical queries." />
@@ -113,7 +113,7 @@ export default function Home() {
                         borderRadius: '8px',
                         boxShadow: '0 20px 40px -10px rgba(0, 86, 179, 0.3)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
-                    }} className="animate-zoom-in delay-200">
+                    }}>
                         <div style={{ textAlign: 'center' }}>
                             <div style={{ fontSize: '5rem', fontWeight: 'bold' }}>10k+</div>
                             <div style={{ fontSize: '1.5rem' }}>Happy Customers</div>
@@ -124,7 +124,7 @@ export default function Home() {
 
             {/* CTA Section */}
             <section style={{ textAlign: 'center', padding: '6rem 20px' }}>
-                <div className="container animate-slide-up delay-300" style={{ maxWidth: '800px' }}>
+                <div className="container" style={{ maxWidth: '800px' }}>
                     <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>Ready to Secure Your Power?</h2>
                     <p style={{ marginBottom: '2.5rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>
                         Get a consultation today and find the perfect power backup solution for your needs.
