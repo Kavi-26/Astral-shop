@@ -282,7 +282,7 @@ export default function Register() {
                                         onChange={handleChange}
                                         required
                                         style={{
-                                            width: '100%',
+                                            width: '90%',
                                             padding: '13px 16px 13px 46px',
                                             borderRadius: '12px',
                                             border: '2px solid #e2e8f0',
@@ -335,7 +335,7 @@ export default function Register() {
                                         onChange={handleChange}
                                         required
                                         style={{
-                                            width: '100%',
+                                            width: '90%',
                                             padding: '13px 16px 13px 46px',
                                             borderRadius: '12px',
                                             border: '2px solid #e2e8f0',
@@ -388,7 +388,7 @@ export default function Register() {
                                         onChange={handleChange}
                                         required
                                         style={{
-                                            width: '100%',
+                                            width: '84%',
                                             padding: '13px 46px 13px 46px',
                                             borderRadius: '12px',
                                             border: '2px solid #e2e8f0',
@@ -494,7 +494,7 @@ export default function Register() {
                                         onChange={handleChange}
                                         required
                                         style={{
-                                            width: '100%',
+                                            width: '84%',
                                             padding: '13px 46px 13px 46px',
                                             borderRadius: '12px',
                                             border: '2px solid #e2e8f0',
@@ -580,7 +580,7 @@ export default function Register() {
                                         onChange={handleChange}
                                         required
                                         style={{
-                                            width: '100%',
+                                            width: '90%',
                                             padding: '13px 16px 13px 46px',
                                             borderRadius: '12px',
                                             border: '2px solid #e2e8f0',
@@ -632,7 +632,7 @@ export default function Register() {
                                         required
                                         rows="3"
                                         style={{
-                                            width: '100%',
+                                            width: '90%',
                                             padding: '13px 16px 13px 46px',
                                             borderRadius: '12px',
                                             border: '2px solid #e2e8f0',
