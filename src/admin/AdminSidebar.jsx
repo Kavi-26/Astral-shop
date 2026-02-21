@@ -1,70 +1,72 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaChartLine, FaBoxOpen, FaShoppingCart, FaUsers, FaFileAlt } from "react-icons/fa";
 
+const navLinks = [
+    { to: '/admin/dashboard', icon: <FaChartLine />, label: 'Dashboard' },
+    { to: '/admin/products', icon: <FaBoxOpen />, label: 'Products' },
+    { to: '/admin/orders', icon: <FaShoppingCart />, label: 'Orders' },
+    { to: '/admin/customers', icon: <FaUsers />, label: 'Customers' },
+    { to: '/admin/reports', icon: <FaFileAlt />, label: 'Reports' }
+];
+
 export default function AdminSidebar() {
     const location = useLocation();
     const isActive = (path) => location.pathname === path;
-
-    const linkStyle = (path) => ({
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
-        padding: '12px',
-        borderRadius: '8px',
-        textDecoration: 'none',
-        fontWeight: isActive(path) ? '600' : '500',
-        color: isActive(path) ? 'var(--primary)' : 'var(--text-main)',
-        background: isActive(path) ? 'var(--secondary)' : 'transparent',
-        transition: 'background 0.2s',
-        marginBottom: '0.5rem'
-    });
 
     return (
         <div style={{
             width: '260px',
             background: 'white',
-            borderRight: '1px solid #e2e8f0',
-            padding: '2rem',
+            borderRight: '1px solid #f1f5f9',
+            padding: '2rem 1.5rem',
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.5rem',
+            gap: '6px',
             position: 'sticky',
             top: '80px',
             height: 'calc(100vh - 80px)'
         }}>
-            <div style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-muted)', fontWeight: 'bold', marginBottom: '1rem', letterSpacing: '0.5px' }}>
-                Main Menu
+            <div style={{
+                fontSize: '0.75rem', textTransform: 'uppercase',
+                color: 'var(--text-muted)', fontWeight: '700',
+                marginBottom: '1rem', letterSpacing: '1.5px', paddingLeft: '12px'
+            }}>
+                Admin Panel
             </div>
 
-            <Link to="/admin/dashboard" style={linkStyle('/admin/dashboard')}
-                onMouseEnter={e => !isActive('/admin/dashboard') && (e.target.style.background = '#f1f5f9')}
-                onMouseLeave={e => !isActive('/admin/dashboard') && (e.target.style.background = 'transparent')}>
-                <FaChartLine /> Dashboard
-            </Link>
-
-            <Link to="/admin/products" style={linkStyle('/admin/products')}
-                onMouseEnter={e => !isActive('/admin/products') && (e.target.style.background = '#f1f5f9')}
-                onMouseLeave={e => !isActive('/admin/products') && (e.target.style.background = 'transparent')}>
-                <FaBoxOpen /> Products
-            </Link>
-
-            <Link to="/admin/orders" style={linkStyle('/admin/orders')}
-                onMouseEnter={e => !isActive('/admin/orders') && (e.target.style.background = '#f1f5f9')}
-                onMouseLeave={e => !isActive('/admin/orders') && (e.target.style.background = 'transparent')}>
-                <FaShoppingCart /> Orders
-            </Link>
-
-            <Link to="/admin/customers" style={linkStyle('/admin/customers')}
-                onMouseEnter={e => !isActive('/admin/customers') && (e.target.style.background = '#f1f5f9')}
-                onMouseLeave={e => !isActive('/admin/customers') && (e.target.style.background = 'transparent')}>
-                <FaUsers /> Customers
-            </Link>
-
-            <Link to="/admin/reports" style={linkStyle('/admin/reports')}
-                onMouseEnter={e => !isActive('/admin/reports') && (e.target.style.background = '#f1f5f9')}
-                onMouseLeave={e => !isActive('/admin/reports') && (e.target.style.background = 'transparent')}>
-                <FaFileAlt /> Reports
-            </Link>
+            {navLinks.map(link => (
+                <Link
+                    key={link.to}
+                    to={link.to}
+                    style={{
+                        display: 'flex', alignItems: 'center', gap: '12px',
+                        padding: '11px 14px', borderRadius: '12px',
+                        textDecoration: 'none',
+                        fontWeight: isActive(link.to) ? '700' : '500',
+                        fontSize: '0.92rem',
+                        color: isActive(link.to) ? 'var(--primary)' : 'var(--text-muted)',
+                        background: isActive(link.to) ? 'linear-gradient(135deg, var(--secondary) 0%, #dbeafe 100%)' : 'transparent',
+                        transition: 'all 0.2s ease',
+                        border: isActive(link.to) ? '1px solid #bfdbfe' : '1px solid transparent',
+                        boxShadow: isActive(link.to) ? '0 2px 8px rgba(0, 86, 179, 0.08)' : 'none'
+                    }}
+                    onMouseEnter={(e) => {
+                        if (!isActive(link.to)) {
+                            e.currentTarget.style.background = '#f8fafc';
+                            e.currentTarget.style.color = 'var(--text-main)';
+                        }
+                    }}
+                    onMouseLeave={(e) => {
+                        if (!isActive(link.to)) {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.color = 'var(--text-muted)';
+                        }
+                    }}
+                >
+                    <span style={{ fontSize: '1rem' }}>{link.icon}</span>
+                    {link.label}
+                </Link>
+            ))}
         </div>
     );
 }
