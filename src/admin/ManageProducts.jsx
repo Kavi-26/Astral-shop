@@ -169,7 +169,11 @@ export default function ManageProducts() {
                                             <span style={{ background: '#eff6ff', padding: '5px 14px', borderRadius: '20px', fontSize: '0.83rem', color: '#1d4ed8', fontWeight: '600' }}>{product.category}</span>
                                         </td>
                                         <td style={{ padding: '1rem', textAlign: 'center', fontWeight: '700', fontSize: '1rem', color: 'var(--text-main)' }}>
-                                            ₹{product.price !== undefined && product.price !== null && product.price !== "" ? Number(product.price).toLocaleString() : "0"}
+                                            {product?.name === "Digital Electronic Voltage Stabilizer" || product?.id === "xq86sjSY5XUl3atipbPI" ? (
+                                                <><span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '600' }}>From</span><br />₹2,500</>
+                                            ) : (
+                                                `₹${product.price !== undefined && product.price !== null && product.price !== "" ? Number(product.price).toLocaleString() : "0"}`
+                                            )}
                                         </td>
                                         <td style={{ padding: '1rem', textAlign: 'center' }}>
                                             <div style={{

@@ -6,6 +6,7 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
     const { addToCart } = useCart();
     const isOutOfStock = product.stock <= 0;
     const isLowStock = product.stock > 0 && product.stock <= 5;
+    const hasVariants = product?.name === "Digital Electronic Voltage Stabilizer" || product?.id === "xq86sjSY5XUl3atipbPI";
 
     // Helper for image rendering
     const ProductImage = () => (
@@ -202,7 +203,7 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
                         fontWeight: '800',
                         color: '#0f172a'
                     }}>
-                        ₹{product.price.toLocaleString()}
+                        {hasVariants ? <span style={{ fontSize: '1.1rem', color: '#64748b', fontWeight: '600' }}>From </span> : null}₹{hasVariants ? '2,500' : product.price.toLocaleString()}
                     </div>
                     <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
                         <Link
@@ -236,41 +237,74 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
                         >
                             <FaEye /> View
                         </Link>
-                        <button
-                            onClick={() => addToCart(product)}
-                            disabled={isOutOfStock}
-                            style={{
-                                flex: 1,
-                                padding: '10px',
-                                borderRadius: '10px',
-                                border: 'none',
-                                background: isOutOfStock ? '#e2e8f0' : 'var(--primary)',
-                                color: isOutOfStock ? '#94a3b8' : 'white',
-                                fontWeight: '600',
-                                fontSize: '0.9rem',
-                                cursor: isOutOfStock ? 'not-allowed' : 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '6px',
-                                transition: 'all 0.2s ease',
-                                boxShadow: isOutOfStock ? 'none' : '0 4px 6px rgba(0, 86, 179, 0.2)'
-                            }}
-                            onMouseEnter={(e) => {
-                                if (!isOutOfStock) {
+                        {hasVariants ? (
+                            <Link
+                                to={`/products/${product.id}`}
+                                style={{
+                                    flex: 1,
+                                    padding: '10px',
+                                    borderRadius: '10px',
+                                    border: 'none',
+                                    background: 'var(--primary)',
+                                    color: 'white',
+                                    fontWeight: '600',
+                                    fontSize: '0.9rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    textDecoration: 'none',
+                                    gap: '6px',
+                                    transition: 'all 0.2s ease',
+                                    boxShadow: '0 4px 6px rgba(0, 86, 179, 0.2)'
+                                }}
+                                onMouseEnter={(e) => {
                                     e.currentTarget.style.transform = 'translateY(-2px)';
                                     e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 86, 179, 0.3)';
-                                }
-                            }}
-                            onMouseLeave={(e) => {
-                                if (!isOutOfStock) {
+                                }}
+                                onMouseLeave={(e) => {
                                     e.currentTarget.style.transform = 'translateY(0)';
                                     e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 86, 179, 0.2)';
-                                }
-                            }}
-                        >
-                            <FaShoppingCart /> Add
-                        </button>
+                                }}
+                            >
+                                Select Option
+                            </Link>
+                        ) : (
+                            <button
+                                onClick={() => addToCart(product)}
+                                disabled={isOutOfStock}
+                                style={{
+                                    flex: 1,
+                                    padding: '10px',
+                                    borderRadius: '10px',
+                                    border: 'none',
+                                    background: isOutOfStock ? '#e2e8f0' : 'var(--primary)',
+                                    color: isOutOfStock ? '#94a3b8' : 'white',
+                                    fontWeight: '600',
+                                    fontSize: '0.9rem',
+                                    cursor: isOutOfStock ? 'not-allowed' : 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '6px',
+                                    transition: 'all 0.2s ease',
+                                    boxShadow: isOutOfStock ? 'none' : '0 4px 6px rgba(0, 86, 179, 0.2)'
+                                }}
+                                onMouseEnter={(e) => {
+                                    if (!isOutOfStock) {
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                        e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 86, 179, 0.3)';
+                                    }
+                                }}
+                                onMouseLeave={(e) => {
+                                    if (!isOutOfStock) {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 86, 179, 0.2)';
+                                    }
+                                }}
+                            >
+                                <FaShoppingCart /> Add
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -369,7 +403,7 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
                         fontWeight: '800',
                         color: '#0f172a'
                     }}>
-                        ₹{product.price.toLocaleString()}
+                        {hasVariants ? <span style={{ fontSize: '0.95rem', color: '#64748b', fontWeight: '600' }}>From </span> : null}₹{hasVariants ? '2,500' : product.price.toLocaleString()}
                     </div>
                 </div>
 
@@ -403,44 +437,80 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
                     >
                         <FaEye size={18} />
                     </Link>
-                    <button
-                        onClick={() => addToCart(product)}
-                        disabled={isOutOfStock}
-                        style={{
-                            flex: 1,
-                            height: '40px',
-                            borderRadius: '10px',
-                            border: 'none',
-                            background: isOutOfStock ? '#e2e8f0' : 'var(--primary)',
-                            color: isOutOfStock ? '#94a3b8' : 'white',
-                            fontWeight: '600',
-                            fontSize: '0.9rem',
-                            cursor: isOutOfStock ? 'not-allowed' : 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '8px',
-                            transition: 'all 0.2s ease',
-                            boxShadow: isOutOfStock ? 'none' : '0 4px 6px rgba(0, 86, 179, 0.2)'
-                        }}
-                        onMouseEnter={(e) => {
-                            if (!isOutOfStock) {
+                    {hasVariants ? (
+                        <Link
+                            to={`/products/${product.id}`}
+                            style={{
+                                flex: 1,
+                                height: '40px',
+                                borderRadius: '10px',
+                                border: 'none',
+                                background: 'var(--primary)',
+                                color: 'white',
+                                fontWeight: '600',
+                                fontSize: '0.9rem',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                textDecoration: 'none',
+                                gap: '8px',
+                                transition: 'all 0.2s ease',
+                                boxShadow: '0 4px 6px rgba(0, 86, 179, 0.2)'
+                            }}
+                            onMouseEnter={(e) => {
                                 e.currentTarget.style.background = 'var(--primary-dark)';
                                 e.currentTarget.style.transform = 'translateY(-2px)';
                                 e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 86, 179, 0.3)';
-                            }
-                        }}
-                        onMouseLeave={(e) => {
-                            if (!isOutOfStock) {
+                            }}
+                            onMouseLeave={(e) => {
                                 e.currentTarget.style.background = 'var(--primary)';
                                 e.currentTarget.style.transform = 'translateY(0)';
                                 e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 86, 179, 0.2)';
-                            }
-                        }}
-                    >
-                        <FaShoppingCart size={16} />
-                        {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
-                    </button>
+                            }}
+                        >
+                            Select Option
+                        </Link>
+                    ) : (
+                        <button
+                            onClick={() => addToCart(product)}
+                            disabled={isOutOfStock}
+                            style={{
+                                flex: 1,
+                                height: '40px',
+                                borderRadius: '10px',
+                                border: 'none',
+                                background: isOutOfStock ? '#e2e8f0' : 'var(--primary)',
+                                color: isOutOfStock ? '#94a3b8' : 'white',
+                                fontWeight: '600',
+                                fontSize: '0.9rem',
+                                cursor: isOutOfStock ? 'not-allowed' : 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                transition: 'all 0.2s ease',
+                                boxShadow: isOutOfStock ? 'none' : '0 4px 6px rgba(0, 86, 179, 0.2)'
+                            }}
+                            onMouseEnter={(e) => {
+                                if (!isOutOfStock) {
+                                    e.currentTarget.style.background = 'var(--primary-dark)';
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                    e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 86, 179, 0.3)';
+                                }
+                            }}
+                            onMouseLeave={(e) => {
+                                if (!isOutOfStock) {
+                                    e.currentTarget.style.background = 'var(--primary)';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 86, 179, 0.2)';
+                                }
+                            }}
+                        >
+                            <FaShoppingCart size={16} />
+                            {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
