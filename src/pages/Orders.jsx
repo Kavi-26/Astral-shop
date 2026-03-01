@@ -5,6 +5,7 @@ import { db } from "../firebase/firebaseConfig";
 import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { FaBoxOpen, FaShippingFast, FaCheckCircle, FaClipboardList, FaFileDownload, FaReceipt } from "react-icons/fa";
 import { jsPDF } from "jspdf";
+import astralLogo from "../assets/astral-logo.png";
 
 export default function Orders() {
     const { currentUser } = useAuth();
@@ -47,130 +48,193 @@ export default function Orders() {
         }
     }
 
-    function downloadInvoice(order) {
+    async function downloadInvoice(order) {
         const doc = new jsPDF();
         const pageWidth = doc.internal.pageSize.getWidth();
-        const margin = 15;
+        const margin = 20;
 
-        // --- Header ---
-        // Header background
-        doc.setFillColor(15, 23, 42); // slate-900 (Dark blue/gray)
-        doc.rect(0, 0, pageWidth, 40, 'F');
+        // --- Header Section ---
 
-        // Brand Name
-        doc.setTextColor(255, 255, 255);
+        // Load Logo Image
+        const imgNode = new Image();
+        imgNode.src = astralLogo;
+        await new Promise((resolve) => {
+            imgNode.onload = resolve;
+            imgNode.onerror = resolve;
+        });
+
+        // Add Logo to PDF
+        // Original text logo was x=margin, y=15, w=55, h=25. The new logo is likely wider.
+        // We'll use width 45, height 18 to fit nicely.
+        doc.addImage(imgNode, 'PNG', margin, 15, 45, 18);
+
+        // Company Name
+        doc.setTextColor(15, 60, 115); // Dark Blue text
         doc.setFontSize(24);
         doc.setFont("helvetica", "bold");
-        doc.text("ASTRAL SHOP", margin, 25);
+        doc.text("ASTRAL ELECTRONICS", margin + 65, 24);
 
-        // Invoice Title
-        doc.setFontSize(16);
+        // Manufacturer Tagline
+        doc.setTextColor(50, 50, 50);
+        doc.setFontSize(8);
         doc.setFont("helvetica", "normal");
-        doc.text("TAX INVOICE", pageWidth - margin, 25, { align: "right" });
+        doc.text("Manufacturers of: STABILIZER, UPS, CVT, SERVO STABILIZER, STEP-UP TRANSFORMERS", margin + 65, 29);
 
-        // Reset text color for body
-        doc.setTextColor(30, 41, 59); // slate-800
+        // GSTIN
+        doc.setFont("helvetica", "bold");
+        doc.text("GSTIN: 33AZVPM9083H1ZN", margin + 65, 33);
 
-        // --- Invoice Info ---
+        // Address
+        doc.setFont("helvetica", "normal");
         doc.setFontSize(10);
+        doc.text("1224, Mettupalayam Road, Saibaba Kovil,", margin + 65, 39);
+        doc.text("Coimbatore-641 011", margin + 65, 44);
+
+        // Header Top/Bottom Lines
+        doc.setDrawColor(15, 60, 115); // Blue lines
+        doc.setLineWidth(1.5);
+        doc.line(margin, 52, pageWidth - margin, 52); // Top border
+
+        // --- Date ---
         doc.setFont("helvetica", "bold");
-        doc.text("Invoice Details:", margin, 55);
+        doc.setFontSize(11);
+        const orderDate = order.createdAt?.toDate ? order.createdAt.toDate().toLocaleDateString('en-GB', {
+            day: '2-digit', month: 'long', year: 'numeric'
+        }) : new Date().toLocaleDateString('en-GB', {
+            day: '2-digit', month: 'long', year: 'numeric'
+        });
+        doc.text(orderDate, pageWidth - margin, 65, { align: 'right' });
 
-        doc.setFont("helvetica", "normal");
-        doc.text(`Order ID: #${order.id}`, margin, 62);
-        doc.text(`Date: ${order.createdAt?.toDate ? order.createdAt.toDate().toLocaleDateString() : new Date().toLocaleDateString()}`, margin, 68);
-        doc.text(`Status: ${order.status || 'Processed'}`, margin, 74);
-        doc.text(`Payment: ${order.paymentMethod || 'COD'}`, margin, 80);
-
-        // --- Customer Info ---
+        // --- To Address ---
+        let startY = 75;
         doc.setFont("helvetica", "bold");
-        doc.text("Billed To:", pageWidth / 2, 55);
+        doc.text("To,", margin, startY);
 
+        startY += 8;
         doc.setFont("helvetica", "normal");
-        doc.text(`${order.userEmail}`, pageWidth / 2, 62);
-        if (order.shippingAddress) {
-            // Split long addresses so they don't run off page
-            const splitAddress = doc.splitTextToSize(order.shippingAddress, (pageWidth / 2) - margin);
-            doc.text(splitAddress, pageWidth / 2, 68);
-        }
 
-        // --- Table Header ---
-        let startY = 95;
-        doc.setFillColor(241, 245, 249); // slate-100
+        // Parse Name and Address
+        // Default values to prevent undefined errors
+        const customerName = order.userName || "Customer";
+        const customerEmail = order.userEmail || "";
+        const shippingAddress = order.shippingAddress || "";
+
+        const addressLines = [
+            customerName,
+            customerEmail,
+            ...doc.splitTextToSize(shippingAddress, 80)
+        ].filter(line => line.trim() !== "");
+
+        addressLines.forEach(line => {
+            doc.text(line, margin, startY);
+            startY += 6;
+        });
+
+        // --- Subject ---
+        startY += 10;
+        doc.setFont("helvetica", "bold");
+        doc.text("Subject: Tax Invoice / Bill of Supply", margin, startY);
+
+        // --- Body / Items Table ---
+        startY += 12;
+        doc.setFont("helvetica", "normal");
+        doc.text("Respected Sir/Madam,", margin, startY);
+
+        startY += 10;
+        const introText = `The company Astral Electronics acknowledges the purchase order #${order.id.slice(0, 8)} made via the Astral Shop digital platform. Below are the details of the products ordered:`;
+        const splitIntro = doc.splitTextToSize(introText, pageWidth - (margin * 2));
+        doc.text(splitIntro, margin, startY);
+
+        startY += (splitIntro.length * 6) + 5;
+
+        // Table Header
+        doc.setFillColor(245, 245, 245);
         doc.rect(margin, startY, pageWidth - (margin * 2), 10, 'F');
+        doc.setDrawColor(200, 200, 200);
+        doc.setLineWidth(0.1);
+        doc.rect(margin, startY, pageWidth - (margin * 2), 10, 'S');
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(10);
-        doc.text("Sl.", margin + 2, startY + 7);
-        doc.text("Description", margin + 15, startY + 7);
-        doc.text("Qty", pageWidth - 70, startY + 7, { align: "center" });
-        doc.text("Unit Price", pageWidth - 45, startY + 7, { align: "center" });
-        doc.text("Total", pageWidth - 15, startY + 7, { align: "right" });
+        doc.text("S.No", margin + 3, startY + 6.5);
+        doc.text("Product Description", margin + 20, startY + 6.5);
+        doc.text("Qty", pageWidth - 80, startY + 6.5, { align: "center" });
+        doc.text("Price", pageWidth - 55, startY + 6.5, { align: "center" });
+        doc.text("Total", pageWidth - margin - 3, startY + 6.5, { align: "right" });
 
-        // --- Table Body ---
+        // Table Rows
+        let tableY = startY + 10;
         doc.setFont("helvetica", "normal");
-        let y = startY + 18;
 
         if (order.items && order.items.length > 0) {
             order.items.forEach((item, index) => {
-                // Check page break
-                if (y > 270) {
+                if (tableY > 230) {
                     doc.addPage();
-                    y = 20;
+                    tableY = 20; // reset on new page
                 }
 
-                doc.text(`${index + 1}`, margin + 2, y);
+                doc.text(`${index + 1}`, margin + 5, tableY + 6);
 
-                // Handle long item descriptions
-                const splitName = doc.splitTextToSize(item.name, 90);
-                doc.text(splitName, margin + 15, y);
+                const splitDesc = doc.splitTextToSize(item.name, 90);
+                doc.text(splitDesc, margin + 20, tableY + 6);
 
-                doc.text(`${item.quantity}`, pageWidth - 70, y, { align: "center" });
-                doc.text(`Rs. ${item.price.toLocaleString()}`, pageWidth - 45, y, { align: "center" });
+                doc.text(`${item.quantity}`, pageWidth - 80, tableY + 6, { align: "center" });
+                doc.text(`Rs. ${item.price.toLocaleString()}`, pageWidth - 55, tableY + 6, { align: "center" });
 
                 const total = item.quantity * item.price;
-                doc.text(`Rs. ${total.toLocaleString()}`, pageWidth - 15, y, { align: "right" });
+                doc.text(`Rs. ${total.toLocaleString()}`, pageWidth - margin - 3, tableY + 6, { align: "right" });
 
-                y += (splitName.length * 5) + 5; // adjust y based on lines
+                const rowHeight = Math.max(10, splitDesc.length * 6 + 4);
 
-                // Draw a light bottom border for row
-                doc.setDrawColor(226, 232, 240); // slate-200
-                doc.line(margin, y - 3, pageWidth - margin, y - 3);
+                // Draw row borders
+                doc.rect(margin, tableY, pageWidth - (margin * 2), rowHeight, 'S');
+
+                tableY += rowHeight;
             });
         }
 
-        // --- Totals Section ---
-        y += 10;
-        if (y > 250) {
+        // Totals Row
+        doc.setFont("helvetica", "bold");
+        doc.text("Grand Total:", pageWidth - 45, tableY + 7, { align: "right" });
+        doc.text(`Rs. ${order.totalAmount?.toLocaleString() || "0"}`, pageWidth - margin - 3, tableY + 7, { align: "right" });
+        doc.rect(margin, tableY, pageWidth - (margin * 2), 10, 'S');
+
+        tableY += 20;
+
+        // --- Outro / Signoff ---
+        if (tableY > 250) {
             doc.addPage();
-            y = 20;
+            tableY = 20;
         }
 
         doc.setFont("helvetica", "normal");
-        doc.text("Subtotal:", pageWidth - 50, y, { align: "right" });
-        doc.text(`Rs. ${order.totalAmount?.toLocaleString() || "0"}`, pageWidth - 15, y, { align: "right" });
+        const outroText = "Thank you for choosing Astral Electronics. We appreciate your business and look forward to serving you again.";
+        const splitOutro = doc.splitTextToSize(outroText, pageWidth - (margin * 2));
+        doc.text(splitOutro, margin, tableY);
 
-        y += 7;
-        doc.text("Shipping:", pageWidth - 50, y, { align: "right" });
-        doc.text("Free", pageWidth - 15, y, { align: "right" });
+        tableY += (splitOutro.length * 6) + 15;
+        doc.text("Regards,", margin, tableY);
 
-        y += 4;
-        doc.setDrawColor(15, 23, 42); // slate-900
-        doc.setLineWidth(0.5);
-        doc.line(pageWidth - 85, y, pageWidth - margin, y);
-
-        y += 7;
+        tableY += 20;
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(12);
-        doc.text("Total Amount:", pageWidth - 50, y, { align: "right" });
-        doc.text(`Rs. ${order.totalAmount?.toLocaleString() || "0"}`, pageWidth - 15, y, { align: "right" });
+        doc.text("Authorized Signatory", margin, tableY);
+        doc.text("ASTRAL ELECTRONICS", margin, tableY + 5);
 
-        // --- Footer ---
+        // --- Footer Lines ---
+        doc.setDrawColor(15, 60, 115);
+        doc.setLineWidth(1.5);
+        doc.line(margin, 275, pageWidth - margin, 275);
+        doc.setLineWidth(0.5);
+        doc.line(margin, 277, pageWidth - margin, 277);
+
+        // Footer Contact
+        doc.setFont("helvetica", "normal");
         doc.setFontSize(10);
-        doc.setFont("helvetica", "italic");
-        doc.setTextColor(100, 116, 139); // slate-500
-        doc.text("Thank you for choosing ASTRAL SHOP!", pageWidth / 2, 280, { align: "center" });
-        doc.text("This is a computer generated invoice and does not require a physical signature.", pageWidth / 2, 285, { align: "center" });
+        doc.setTextColor(30, 30, 30);
+
+        // Simulating icons with text for jsPDF
+        doc.text("(Phone) 98422 54817 / 0422 4383817", margin + 30, 285);
+        doc.text("(Email) aaajarjun@gmail.com", pageWidth / 2 + 10, 285);
 
         doc.save(`Invoice_ASTRAL_${order.id.slice(0, 8)}.pdf`);
     }

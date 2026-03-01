@@ -14,7 +14,7 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
             width: '100%',
             height: '100%',
             position: 'relative',
-            background: '#f8fafc',
+            background: 'white',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -28,7 +28,7 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
                         width: '100%',
                         height: '100%',
                         objectFit: 'contain',
-                        padding: '16px',
+                        padding: 0,
                         transition: 'transform 0.5s ease',
                         opacity: isOutOfStock ? 0.6 : 1
                     }}
