@@ -49,28 +49,130 @@ export default function Orders() {
 
     function downloadInvoice(order) {
         const doc = new jsPDF();
-        doc.setFontSize(20);
-        doc.text("ASTRAL - Invoice", 10, 20);
-        doc.setFontSize(12);
-        doc.text(`Order ID: ${order.id}`, 10, 30);
-        doc.text(`Date: ${order.createdAt?.toDate ? order.createdAt.toDate().toDateString() : new Date().toDateString()}`, 10, 40);
-        doc.text(`Customer: ${order.userEmail}`, 10, 50);
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const margin = 15;
 
-        let y = 70;
-        doc.setFontSize(14);
-        doc.text("Items:", 10, 60);
-        doc.setFontSize(12);
+        // --- Header ---
+        // Header background
+        doc.setFillColor(15, 23, 42); // slate-900 (Dark blue/gray)
+        doc.rect(0, 0, pageWidth, 40, 'F');
 
-        order.items.forEach((item) => {
-            doc.text(`${item.quantity}x ${item.name} - ₹${item.price.toLocaleString()}`, 10, y);
-            y += 10;
-        });
+        // Brand Name
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(24);
+        doc.setFont("helvetica", "bold");
+        doc.text("ASTRAL SHOP", margin, 25);
 
-        doc.line(10, y, 200, y);
+        // Invoice Title
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "normal");
+        doc.text("TAX INVOICE", pageWidth - margin, 25, { align: "right" });
+
+        // Reset text color for body
+        doc.setTextColor(30, 41, 59); // slate-800
+
+        // --- Invoice Info ---
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "bold");
+        doc.text("Invoice Details:", margin, 55);
+
+        doc.setFont("helvetica", "normal");
+        doc.text(`Order ID: #${order.id}`, margin, 62);
+        doc.text(`Date: ${order.createdAt?.toDate ? order.createdAt.toDate().toLocaleDateString() : new Date().toLocaleDateString()}`, margin, 68);
+        doc.text(`Status: ${order.status || 'Processed'}`, margin, 74);
+        doc.text(`Payment: ${order.paymentMethod || 'COD'}`, margin, 80);
+
+        // --- Customer Info ---
+        doc.setFont("helvetica", "bold");
+        doc.text("Billed To:", pageWidth / 2, 55);
+
+        doc.setFont("helvetica", "normal");
+        doc.text(`${order.userEmail}`, pageWidth / 2, 62);
+        if (order.shippingAddress) {
+            // Split long addresses so they don't run off page
+            const splitAddress = doc.splitTextToSize(order.shippingAddress, (pageWidth / 2) - margin);
+            doc.text(splitAddress, pageWidth / 2, 68);
+        }
+
+        // --- Table Header ---
+        let startY = 95;
+        doc.setFillColor(241, 245, 249); // slate-100
+        doc.rect(margin, startY, pageWidth - (margin * 2), 10, 'F');
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.text("Sl.", margin + 2, startY + 7);
+        doc.text("Description", margin + 15, startY + 7);
+        doc.text("Qty", pageWidth - 70, startY + 7, { align: "center" });
+        doc.text("Unit Price", pageWidth - 45, startY + 7, { align: "center" });
+        doc.text("Total", pageWidth - 15, startY + 7, { align: "right" });
+
+        // --- Table Body ---
+        doc.setFont("helvetica", "normal");
+        let y = startY + 18;
+
+        if (order.items && order.items.length > 0) {
+            order.items.forEach((item, index) => {
+                // Check page break
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+
+                doc.text(`${index + 1}`, margin + 2, y);
+
+                // Handle long item descriptions
+                const splitName = doc.splitTextToSize(item.name, 90);
+                doc.text(splitName, margin + 15, y);
+
+                doc.text(`${item.quantity}`, pageWidth - 70, y, { align: "center" });
+                doc.text(`Rs. ${item.price.toLocaleString()}`, pageWidth - 45, y, { align: "center" });
+
+                const total = item.quantity * item.price;
+                doc.text(`Rs. ${total.toLocaleString()}`, pageWidth - 15, y, { align: "right" });
+
+                y += (splitName.length * 5) + 5; // adjust y based on lines
+
+                // Draw a light bottom border for row
+                doc.setDrawColor(226, 232, 240); // slate-200
+                doc.line(margin, y - 3, pageWidth - margin, y - 3);
+            });
+        }
+
+        // --- Totals Section ---
         y += 10;
-        doc.setFontSize(14);
-        doc.text(`Total: ₹${order.totalAmount.toLocaleString()}`, 10, y);
-        doc.save(`Invoice_${order.id}.pdf`);
+        if (y > 250) {
+            doc.addPage();
+            y = 20;
+        }
+
+        doc.setFont("helvetica", "normal");
+        doc.text("Subtotal:", pageWidth - 50, y, { align: "right" });
+        doc.text(`Rs. ${order.totalAmount?.toLocaleString() || "0"}`, pageWidth - 15, y, { align: "right" });
+
+        y += 7;
+        doc.text("Shipping:", pageWidth - 50, y, { align: "right" });
+        doc.text("Free", pageWidth - 15, y, { align: "right" });
+
+        y += 4;
+        doc.setDrawColor(15, 23, 42); // slate-900
+        doc.setLineWidth(0.5);
+        doc.line(pageWidth - 85, y, pageWidth - margin, y);
+
+        y += 7;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text("Total Amount:", pageWidth - 50, y, { align: "right" });
+        doc.text(`Rs. ${order.totalAmount?.toLocaleString() || "0"}`, pageWidth - 15, y, { align: "right" });
+
+        // --- Footer ---
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "italic");
+        doc.setTextColor(100, 116, 139); // slate-500
+        doc.text("Thank you for choosing ASTRAL SHOP!", pageWidth / 2, 280, { align: "center" });
+        doc.text("This is a computer generated invoice and does not require a physical signature.", pageWidth / 2, 285, { align: "center" });
+
+        doc.save(`Invoice_ASTRAL_${order.id.slice(0, 8)}.pdf`);
     }
 
     return (
