@@ -167,7 +167,7 @@ export default function ProductDetails() {
 
     return (
         <div style={{ background: '#f8fafc', minHeight: 'calc(100vh - 80px)' }}>
-            <div className="container" style={{ padding: '3rem 20px' }}>
+            <div className="container" style={{ padding: '2rem 20px', maxWidth: '1100px' }}>
                 {/* Back Button */}
                 <Link
                     to="/products"
@@ -175,26 +175,20 @@ export default function ProductDetails() {
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '8px',
-                        marginBottom: '2rem',
-                        padding: '10px 20px',
-                        background: '#f8fafc',
-                        borderRadius: '12px',
+                        marginBottom: '1.5rem',
+                        padding: '8px 18px',
+                        background: 'white',
+                        borderRadius: '10px',
                         textDecoration: 'none',
-                        color: '#64748b',
+                        color: 'var(--primary)',
                         fontWeight: '600',
-                        fontSize: '0.95rem',
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                        border: '2px solid var(--primary)',
+                        transition: 'all 0.3s ease',
+                        fontSize: '0.9rem',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
                     }}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#f1f5f9';
-                        e.currentTarget.style.color = 'var(--primary)';
-                        e.currentTarget.style.transform = 'translateX(-4px)';
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.background = '#f8fafc';
-                        e.currentTarget.style.color = '#64748b';
-                        e.currentTarget.style.transform = 'translateX(0)';
-                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--secondary)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'white'}
                 >
                     <FaArrowLeft /> Back to Products
                 </Link>
@@ -202,63 +196,72 @@ export default function ProductDetails() {
                 {/* Main Product Card */}
                 <div style={{
                     background: 'white',
-                    borderRadius: '24px',
-                    boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.05)',
+                    borderRadius: '20px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                     overflow: 'hidden',
-                    border: '1px solid #f1f5f9'
+                    border: '1px solid #e2e8f0'
                 }}>
                     <div style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-                        gap: '3rem',
-                        padding: '3rem'
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: '2rem',
+                        padding: '2rem'
                     }}>
                         {/* Image Section */}
                         <div style={{ position: 'relative' }}>
                             <div style={{
                                 position: 'relative',
-                                borderRadius: '24px',
+                                borderRadius: '16px',
                                 overflow: 'hidden',
-                                background: 'white',
-                                boxShadow: '0 10px 30px -10px rgba(0,0,0,0.05)',
-                                border: '1px solid #f1f5f9',
+                                background: '#f8fafc',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                                aspectRatio: '1 / 1',
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'center',
-                                minHeight: '400px',
-                                padding: '2rem'
+                                justifyContent: 'center'
                             }}>
-                                <img
-                                    src={product.imageUrl || "https://placehold.co/600x500?text=Product+Image"}
-                                    alt={product.name}
-                                    style={{
-                                        maxWidth: '100%',
-                                        maxHeight: '400px',
-                                        objectFit: 'contain',
-                                        display: 'block',
-                                        opacity: isOutOfStock ? 0.6 : 1,
-                                        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
-                                    }}
-                                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                />
+                                {product.imageUrl ? (
+                                    <img
+                                        src={product.imageUrl}
+                                        alt={product.name}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'contain',
+                                            padding: '24px',
+                                            display: 'block',
+                                            opacity: isOutOfStock ? 0.6 : 1
+                                        }}
+                                    />
+                                ) : (
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                        color: '#94a3b8'
+                                    }}>
+                                        <FaTags style={{ fontSize: '3rem' }} />
+                                        <span style={{ fontSize: '0.9rem', fontWeight: '600' }}>No Image Available</span>
+                                    </div>
+                                )}
 
                                 {/* Stock Badge on Image */}
                                 {isOutOfStock && (
                                     <div style={{
                                         position: 'absolute',
-                                        top: '1.5rem',
-                                        right: '1.5rem',
+                                        top: '1rem',
+                                        right: '1rem',
                                         background: '#fee2e2',
                                         color: '#dc2626',
-                                        padding: '12px 20px',
+                                        padding: '8px 16px',
                                         borderRadius: '25px',
-                                        fontSize: '0.9rem',
+                                        fontSize: '0.85rem',
                                         fontWeight: '700',
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: '6px',
-                                        boxShadow: '0 4px 6px rgba(0,0,0,0.15)'
+                                        boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
                                     }}>
                                         <FaExclamationCircle /> Out of Stock
                                     </div>
@@ -266,37 +269,58 @@ export default function ProductDetails() {
                                 {isLowStock && (
                                     <div style={{
                                         position: 'absolute',
-                                        top: '1.5rem',
-                                        right: '1.5rem',
+                                        top: '1rem',
+                                        right: '1rem',
                                         background: '#fef3c7',
                                         color: '#d97706',
-                                        padding: '12px 20px',
+                                        padding: '8px 16px',
                                         borderRadius: '25px',
-                                        fontSize: '0.9rem',
+                                        fontSize: '0.85rem',
                                         fontWeight: '700',
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: '6px',
-                                        boxShadow: '0 4px 6px rgba(0,0,0,0.15)'
+                                        boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
                                     }}>
                                         <FaBox /> Only {product.stock} Left
                                     </div>
                                 )}
 
+                                {/* Category Badge */}
+                                <div style={{
+                                    position: 'absolute',
+                                    bottom: '1rem',
+                                    left: '1rem',
+                                    background: 'rgba(255, 255, 255, 0.95)',
+                                    backdropFilter: 'blur(10px)',
+                                    padding: '8px 14px',
+                                    borderRadius: '10px',
+                                    fontSize: '0.85rem',
+                                    fontWeight: '700',
+                                    color: 'var(--primary)',
+                                    boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px'
+                                }}>
+                                    <FaTags /> {product.category}
+                                </div>
                             </div>
                         </div>
 
                         {/* Details Section */}
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '1.2rem' }}>
+                            {/* Top Badges Row */}
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
                                 <span style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
-                                    padding: '6px 14px',
-                                    borderRadius: '20px',
-                                    background: '#f1f5f9',
-                                    color: '#475569',
-                                    fontSize: '0.8rem',
+                                    gap: '5px',
+                                    background: 'rgba(0, 86, 179, 0.08)',
+                                    color: 'var(--primary)',
+                                    padding: '5px 10px',
+                                    borderRadius: '6px',
+                                    fontSize: '0.78rem',
                                     fontWeight: '700',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.5px'
@@ -306,12 +330,12 @@ export default function ProductDetails() {
                                 <span style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
-                                    gap: '6px',
+                                    gap: '5px',
                                     background: '#dcfce7',
                                     color: '#16a34a',
-                                    padding: '6px 14px',
-                                    borderRadius: '20px',
-                                    fontSize: '0.8rem',
+                                    padding: '5px 10px',
+                                    borderRadius: '6px',
+                                    fontSize: '0.78rem',
                                     fontWeight: '700',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.5px'
@@ -322,70 +346,27 @@ export default function ProductDetails() {
 
                             {/* Product Name */}
                             <h1 style={{
-                                fontSize: '2.5rem',
-                                marginBottom: '1.5rem',
-                                color: '#0f172a',
-                                fontWeight: '800',
-                                lineHeight: '1.2',
-                                letterSpacing: '-0.5px'
+                                fontSize: '2rem',
+                                marginBottom: '1rem',
+                                color: 'var(--text-main)',
+                                fontWeight: '700',
+                                lineHeight: '1.25'
                             }}>
                                 {product.name}
                             </h1>
 
-                            {/* Variants List */}
-                            {hasVariants && (
-                                <div style={{ marginBottom: '1.5rem' }}>
-                                    <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: '600', color: 'var(--text-main)', fontSize: '1rem' }}>
-                                        Select Capacity & Application
-                                    </label>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                        {stabilizerOptions.map((opt, idx) => (
-                                            <div
-                                                key={idx}
-                                                onClick={() => setSelectedVariant(idx)}
-                                                style={{
-                                                    padding: '14px 18px',
-                                                    border: selectedVariant === idx ? '2px solid var(--primary)' : '1px solid #e2e8f0',
-                                                    borderRadius: '12px',
-                                                    background: selectedVariant === idx ? '#f0f4f8' : 'white',
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                    transition: 'all 0.2s',
-                                                    boxShadow: selectedVariant === idx ? '0 2px 8px rgba(0,86,179,0.1)' : 'none'
-                                                }}
-                                            >
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                                                    <div style={{
-                                                        width: '20px', height: '20px', borderRadius: '50%',
-                                                        border: selectedVariant === idx ? '6px solid var(--primary)' : '2px solid #cbd5e1',
-                                                        transition: 'all 0.2s'
-                                                    }}></div>
-                                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                        <span style={{ fontWeight: '700', fontSize: '1.05rem', color: 'var(--text-main)' }}>{opt.capacity}</span>
-                                                        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{opt.application}</span>
-                                                    </div>
-                                                </div>
-                                                <span style={{ fontWeight: '800', fontSize: '1.1rem', color: 'var(--text-main)' }}>₹{opt.price.toLocaleString()}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
                             {/* Stock Status */}
-                            <div style={{ marginBottom: '1.5rem' }}>
+                            <div style={{ marginBottom: '1rem' }}>
                                 {!isOutOfStock ? (
                                     <div style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',
-                                        gap: '8px',
+                                        gap: '6px',
                                         background: '#dcfce7',
                                         color: '#166534',
-                                        padding: '10px 18px',
-                                        borderRadius: '10px',
-                                        fontSize: '0.95rem',
+                                        padding: '8px 14px',
+                                        borderRadius: '8px',
+                                        fontSize: '0.85rem',
                                         fontWeight: '700'
                                     }}>
                                         <FaCheckCircle /> In Stock ({product.stock} units available)
@@ -394,12 +375,12 @@ export default function ProductDetails() {
                                     <div style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',
-                                        gap: '8px',
+                                        gap: '6px',
                                         background: '#fee2e2',
                                         color: '#dc2626',
-                                        padding: '10px 18px',
-                                        borderRadius: '10px',
-                                        fontSize: '0.95rem',
+                                        padding: '8px 14px',
+                                        borderRadius: '8px',
+                                        fontSize: '0.85rem',
                                         fontWeight: '700'
                                     }}>
                                         <FaExclamationCircle /> Out of Stock
@@ -409,105 +390,127 @@ export default function ProductDetails() {
 
                             {/* Price */}
                             <div style={{
-                                fontSize: '3rem',
+                                fontSize: '2.5rem',
                                 color: 'var(--primary)',
-                                fontWeight: '800',
-                                marginBottom: '2rem',
+                                fontWeight: '700',
+                                marginBottom: '1.25rem',
                                 display: 'flex',
                                 alignItems: 'baseline',
-                                gap: '0.5rem',
-                                letterSpacing: '-1px'
+                                gap: '0.4rem'
                             }}>
                                 ₹{hasVariants ? stabilizerOptions[selectedVariant].price.toLocaleString() : product.price.toLocaleString()}
                                 <span style={{
-                                    fontSize: '1rem',
-                                    color: '#94a3b8',
-                                    fontWeight: '600',
-                                    letterSpacing: 'normal'
+                                    fontSize: '0.9rem',
+                                    color: 'var(--text-muted)',
+                                    fontWeight: '500'
                                 }}>
                                     per unit
                                 </span>
                             </div>
 
-                            {/* Specifications */}
-                            <div style={{
-                                marginBottom: '2.5rem',
-                                padding: '2rem',
-                                background: '#f8fafc',
-                                borderRadius: '20px',
-                                border: '1px solid #f1f5f9'
-                            }}>
-                                <h3 style={{
-                                    fontSize: '1.2rem',
-                                    marginBottom: '1.2rem',
-                                    color: '#0f172a',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '10px',
-                                    fontWeight: '700'
-                                }}>
-                                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', background: '#e0e7ff', color: '#4f46e5', borderRadius: '8px' }}>
-                                        <FaInfoCircle size={16} />
-                                    </span>
-                                    Specifications
-                                </h3>
-                                <ul style={{
-                                    margin: 0,
-                                    paddingLeft: '5px',
-                                    lineHeight: '1.8',
-                                    color: '#475569',
-                                    listStyleType: 'none',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    gap: '10px'
-                                }}>
-                                    {product.specifications ? (
-                                        product.specifications.split(',').map((spec, i) => (
-                                            <li key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                                                <span style={{ color: '#4f46e5', marginTop: '4px' }}>•</span>
-                                                <span>{spec.trim()}</span>
-                                            </li>
-                                        ))
-                                    ) : (
-                                        <li style={{ color: '#94a3b8', fontStyle: 'italic' }}>No specific details available.</li>
-                                    )}
-                                </ul>
-                            </div>
-
-                            {/* Quantity Selector */}
-                            {!isOutOfStock && (
-                                <div style={{ marginBottom: '2rem' }}>
-                                    <label style={{
-                                        display: 'block',
-                                        marginBottom: '0.75rem',
-                                        fontWeight: '600',
-                                        color: 'var(--text-main)',
-                                        fontSize: '1rem'
-                                    }}>
-                                        Quantity
+                            {/* Variants List */}
+                            {hasVariants && (
+                                <div style={{ marginBottom: '1.25rem' }}>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-main)', fontSize: '0.95rem' }}>
+                                        Select Capacity & Application
                                     </label>
-                                    <div style={{ display: 'flex', alignItems: 'center', background: '#f8fafc', borderRadius: '50px', padding: '5px', border: '1px solid #f1f5f9', width: 'fit-content' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        {stabilizerOptions.map((opt, idx) => (
+                                            <div
+                                                key={idx}
+                                                onClick={() => setSelectedVariant(idx)}
+                                                style={{
+                                                    padding: '12px 14px',
+                                                    border: selectedVariant === idx ? '2px solid var(--primary)' : '1px solid #e2e8f0',
+                                                    borderRadius: '10px',
+                                                    background: selectedVariant === idx ? '#f0f4f8' : 'white',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                    transition: 'all 0.2s',
+                                                    boxShadow: selectedVariant === idx ? '0 2px 8px rgba(0,86,179,0.1)' : 'none'
+                                                }}
+                                            >
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                    <div style={{
+                                                        width: '18px', height: '18px', borderRadius: '50%',
+                                                        border: selectedVariant === idx ? '5px solid var(--primary)' : '2px solid #cbd5e1',
+                                                        transition: 'all 0.2s'
+                                                    }}></div>
+                                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                        <span style={{ fontWeight: '700', fontSize: '0.95rem', color: 'var(--text-main)' }}>{opt.capacity}</span>
+                                                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{opt.application}</span>
+                                                    </div>
+                                                </div>
+                                                <span style={{ fontWeight: '800', fontSize: '1rem', color: 'var(--text-main)' }}>₹{opt.price.toLocaleString()}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Specifications */}
+                            {product.specifications && (
+                                <div style={{
+                                    marginBottom: '1.25rem',
+                                    padding: '1rem 1.25rem',
+                                    background: '#f8fafc',
+                                    borderRadius: '10px',
+                                    border: '1px solid #e2e8f0'
+                                }}>
+                                    <h3 style={{
+                                        fontSize: '1.05rem',
+                                        marginBottom: '0.5rem',
+                                        color: 'var(--text-main)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px'
+                                    }}>
+                                        <FaInfoCircle style={{ color: 'var(--primary)' }} />
+                                        Specifications
+                                    </h3>
+                                    <ul style={{
+                                        marginTop: '0.25rem',
+                                        paddingLeft: '20px',
+                                        lineHeight: '1.7',
+                                        color: 'var(--text-main)',
+                                        fontSize: '0.9rem'
+                                    }}>
+                                        {product.specifications.split(',').map((spec, i) => (
+                                            <li key={i} style={{ marginBottom: '0.25rem' }}>
+                                                {spec.trim()}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                            {/* Quantity + Add to Cart Row */}
+                            {!isOutOfStock && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
                                         <button
                                             onClick={() => setQuantity(Math.max(1, quantity - 1))}
                                             style={{
                                                 width: '40px',
                                                 height: '40px',
-                                                borderRadius: '50%',
-                                                border: 'none',
+                                                borderRadius: '10px 0 0 10px',
+                                                border: '2px solid #e2e8f0',
+                                                borderRight: 'none',
                                                 background: 'white',
-                                                boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                                                fontSize: '1.2rem',
+                                                fontSize: '1.3rem',
                                                 fontWeight: '700',
                                                 cursor: 'pointer',
-                                                color: '#64748b',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                transition: 'all 0.2s ease',
-                                                userSelect: 'none'
+                                                color: 'var(--primary)',
+                                                transition: 'all 0.2s ease'
                                             }}
-                                            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--primary)'; }}
-                                            onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.background = '#f1f5f9';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.background = 'white';
+                                            }}
                                         >
                                             −
                                         </button>
@@ -518,17 +521,16 @@ export default function ProductDetails() {
                                             value={quantity}
                                             onChange={(e) => setQuantity(Math.min(product.stock, Math.max(1, parseInt(e.target.value) || 1)))}
                                             style={{
-                                                width: '60px',
+                                                width: '50px',
                                                 height: '40px',
                                                 textAlign: 'center',
-                                                fontSize: '1.2rem',
+                                                fontSize: '1rem',
                                                 fontWeight: '700',
-                                                border: 'none',
-                                                background: 'transparent',
-                                                color: '#0f172a',
+                                                border: '2px solid #e2e8f0',
+                                                borderLeft: 'none',
+                                                borderRight: 'none',
                                                 outline: 'none',
-                                                appearance: 'textfield',
-                                                MozAppearance: 'textfield'
+                                                borderRadius: '0'
                                             }}
                                         />
                                         <button
@@ -537,78 +539,91 @@ export default function ProductDetails() {
                                             style={{
                                                 width: '40px',
                                                 height: '40px',
-                                                borderRadius: '50%',
-                                                border: 'none',
+                                                borderRadius: '0 10px 10px 0',
+                                                border: '2px solid #e2e8f0',
+                                                borderLeft: 'none',
                                                 background: 'white',
-                                                boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                                                fontSize: '1.2rem',
+                                                fontSize: '1.3rem',
                                                 fontWeight: '700',
                                                 cursor: quantity >= product.stock ? 'not-allowed' : 'pointer',
-                                                color: '#64748b',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                transition: 'all 0.2s ease',
-                                                opacity: quantity >= product.stock ? 0.4 : 1,
-                                                userSelect: 'none'
+                                                color: 'var(--primary)',
+                                                opacity: quantity >= product.stock ? 0.5 : 1,
+                                                transition: 'all 0.2s ease'
                                             }}
                                             onMouseEnter={(e) => {
                                                 if (quantity < product.stock) {
-                                                    e.currentTarget.style.color = 'var(--primary)';
+                                                    e.currentTarget.style.background = '#f1f5f9';
                                                 }
                                             }}
                                             onMouseLeave={(e) => {
-                                                if (quantity < product.stock) {
-                                                    e.currentTarget.style.color = '#64748b';
-                                                }
+                                                e.currentTarget.style.background = 'white';
                                             }}
                                         >
                                             +
                                         </button>
                                     </div>
+
+                                    {/* Add to Cart Button */}
+                                    <button
+                                        onClick={handleAddToCart}
+                                        style={{
+                                            padding: '10px 28px',
+                                            fontSize: '1rem',
+                                            fontWeight: '700',
+                                            flex: 1,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '10px',
+                                            background: 'var(--primary)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '10px',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s ease',
+                                            boxShadow: '0 4px 6px rgba(0, 86, 179, 0.3)',
+                                            height: '44px'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = 'var(--primary-dark)';
+                                            e.currentTarget.style.transform = 'translateY(-2px)';
+                                            e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 86, 179, 0.4)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = 'var(--primary)';
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 86, 179, 0.3)';
+                                        }}
+                                    >
+                                        <FaShoppingCart />
+                                        Add {quantity} to Cart
+                                    </button>
                                 </div>
                             )}
 
-                            {/* Add to Cart Button */}
-                            <button
-                                onClick={handleAddToCart}
-                                disabled={isOutOfStock}
-                                style={{
-                                    padding: '18px 32px',
-                                    fontSize: '1.2rem',
-                                    fontWeight: '700',
-                                    width: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '12px',
-                                    background: isOutOfStock ? '#cbd5e1' : 'var(--primary)',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '12px',
-                                    cursor: isOutOfStock ? 'not-allowed' : 'pointer',
-                                    transition: 'all 0.3s ease',
-                                    boxShadow: isOutOfStock ? 'none' : '0 4px 6px rgba(0, 86, 179, 0.3)',
-                                    opacity: isOutOfStock ? 0.6 : 1
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!isOutOfStock) {
-                                        e.currentTarget.style.background = 'var(--primary-dark)';
-                                        e.currentTarget.style.transform = 'translateY(-2px)';
-                                        e.currentTarget.style.boxShadow = '0 6px 12px rgba(0, 86, 179, 0.4)';
-                                    }
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!isOutOfStock) {
-                                        e.currentTarget.style.background = 'var(--primary)';
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 86, 179, 0.3)';
-                                    }
-                                }}
-                            >
-                                <FaShoppingCart />
-                                {isOutOfStock ? 'Out of Stock' : `Add ${quantity} to Cart`}
-                            </button>
+                            {isOutOfStock && (
+                                <button
+                                    disabled
+                                    style={{
+                                        padding: '14px 32px',
+                                        fontSize: '1rem',
+                                        fontWeight: '700',
+                                        width: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '10px',
+                                        background: '#cbd5e1',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '10px',
+                                        cursor: 'not-allowed',
+                                        opacity: 0.6
+                                    }}
+                                >
+                                    <FaShoppingCart /> Out of Stock
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
