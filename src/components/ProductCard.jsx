@@ -1,7 +1,6 @@
-// src/components/ProductCard.js
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { FaShoppingCart, FaEye, FaBox, FaCheckCircle, FaExclamationCircle, FaImage } from "react-icons/fa";
+import { FaShoppingCart, FaEye, FaBox, FaCheckCircle, FaExclamationCircle, FaImage, FaShieldAlt } from "react-icons/fa";
 
 export default function ProductCard({ product, viewMode = 'grid' }) {
     const { addToCart } = useCart();
@@ -27,7 +26,8 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
                     style={{
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover',
+                        objectFit: 'contain',
+                        padding: '16px',
                         transition: 'transform 0.5s ease',
                         opacity: isOutOfStock ? 0.6 : 1
                     }}
@@ -134,7 +134,7 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
 
                 {/* Content */}
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
                         <span style={{
                             fontSize: '0.75rem',
                             color: 'var(--primary)',
@@ -146,6 +146,19 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
                             letterSpacing: '0.5px'
                         }}>
                             {product.category}
+                        </span>
+                        <span style={{
+                            fontSize: '0.75rem',
+                            color: '#16a34a',
+                            background: '#dcfce7',
+                            padding: '4px 8px',
+                            borderRadius: '6px',
+                            fontWeight: '700',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                        }}>
+                            <FaShieldAlt /> 2 Yrs Warranty
                         </span>
                     </div>
 
@@ -307,15 +320,32 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
                 gap: '1rem'
             }}>
                 <div>
-                    <span style={{
-                        fontSize: '0.75rem',
-                        color: '#64748b',
-                        fontWeight: '600',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
-                    }}>
-                        {product.category}
-                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                        <span style={{
+                            fontSize: '0.75rem',
+                            color: '#64748b',
+                            fontWeight: '600',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px'
+                        }}>
+                            {product.category}
+                        </span>
+                        <span style={{
+                            fontSize: '0.7rem',
+                            color: '#16a34a',
+                            background: '#dcfce7',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            fontWeight: '700',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px'
+                        }}>
+                            <FaShieldAlt /> 2 Yrs Warranty
+                        </span>
+                    </div>
                     <h3 style={{
                         fontSize: '1.1rem',
                         marginTop: '4px',

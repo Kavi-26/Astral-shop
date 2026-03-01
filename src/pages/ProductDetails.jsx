@@ -4,7 +4,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useCart } from "../context/CartContext";
-import { FaShoppingCart, FaArrowLeft, FaBox, FaCheckCircle, FaExclamationCircle, FaTags, FaInfoCircle } from "react-icons/fa";
+import { FaShoppingCart, FaArrowLeft, FaBox, FaCheckCircle, FaExclamationCircle, FaTags, FaInfoCircle, FaShieldAlt } from "react-icons/fa";
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -207,7 +207,9 @@ export default function ProductDetails() {
                                     alt={product.name}
                                     style={{
                                         width: '100%',
-                                        height: 'auto',
+                                        height: '400px',
+                                        objectFit: 'contain',
+                                        padding: '24px',
                                         display: 'block',
                                         opacity: isOutOfStock ? 0.6 : 1
                                     }}
@@ -277,6 +279,23 @@ export default function ProductDetails() {
 
                         {/* Details Section */}
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ marginBottom: '1rem' }}>
+                                <span style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    background: '#dcfce7',
+                                    color: '#16a34a',
+                                    padding: '6px 12px',
+                                    borderRadius: '8px',
+                                    fontSize: '0.85rem',
+                                    fontWeight: '700',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px'
+                                }}>
+                                    <FaShieldAlt /> 2 Years Warranty
+                                </span>
+                            </div>
                             {/* Product Name */}
                             <h1 style={{
                                 fontSize: '2.5rem',

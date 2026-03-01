@@ -157,7 +157,7 @@ export default function ManageProducts() {
                                         <td style={{ padding: '1rem 1.2rem' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                                 <div style={{ width: '48px', height: '48px', borderRadius: '12px', overflow: 'hidden', background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                                                    {product.imageUrl ? <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <FaBoxOpen style={{ color: '#cbd5e1' }} />}
+                                                    {product.imageUrl ? <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }} /> : <FaBoxOpen style={{ color: '#cbd5e1' }} />}
                                                 </div>
                                                 <div>
                                                     <div style={{ fontWeight: '600', color: 'var(--text-main)', fontSize: '0.95rem' }}>{product.name || <span style={{ color: '#ef4444', fontStyle: 'italic' }}>Unnamed</span>}</div>

@@ -215,7 +215,7 @@ export default function Checkout() {
                                 <div key={item.id} className="flex-between" style={{ fontSize: '0.9rem', padding: '6px 0' }}>
                                     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                         <div style={{ position: 'relative' }}>
-                                            <img src={item.imageUrl} alt="" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', background: '#f1f5f9' }} />
+                                            <img src={item.imageUrl} alt="" style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'contain', padding: '4px', background: '#f1f5f9' }} />
                                             <span style={{
                                                 position: 'absolute', top: '-6px', right: '-6px',
                                                 background: 'var(--primary)', color: 'white',

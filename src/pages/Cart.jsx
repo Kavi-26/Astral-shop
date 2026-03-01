@@ -104,7 +104,7 @@ export default function Cart() {
                                             overflow: 'hidden', background: '#f8fafc',
                                             border: '1px solid #e2e8f0', flexShrink: 0
                                         }}>
-                                            <img src={item.imageUrl} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            <img src={item.imageUrl} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px' }} />
                                         </div>
 
                                         <div style={{ flex: '1 1 200px' }}>

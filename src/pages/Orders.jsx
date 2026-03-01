@@ -170,7 +170,7 @@ export default function Orders() {
                                                             background: '#f1f5f9', display: 'flex', alignItems: 'center',
                                                             justifyContent: 'center', overflow: 'hidden', border: '1px solid #e2e8f0', flexShrink: 0
                                                         }}>
-                                                            {item.imageUrl ? <img src={item.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <FaBoxOpen color="#cbd5e1" />}
+                                                            {item.imageUrl ? <img src={item.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }} /> : <FaBoxOpen color="#cbd5e1" />}
                                                         </div>
                                                         <div style={{ flex: 1 }}>
                                                             <div style={{ fontWeight: '600', color: 'var(--text-main)', fontSize: '0.9rem' }}>{item.name}</div>
