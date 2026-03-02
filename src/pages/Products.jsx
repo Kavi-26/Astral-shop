@@ -104,17 +104,6 @@ export default function Products() {
     return (
         <div style={{ background: '#f8fafc', minHeight: 'calc(100vh - 80px)' }}>
             <div className="container" style={{ padding: '2rem 20px', maxWidth: '1400px', margin: '0 auto' }}>
-                {/* Breadcrumb */}
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginBottom: '1.5rem',
-                    fontSize: '0.9rem',
-                    color: 'var(--text-muted)'
-                }}>
-                </div>
-
                 {/* Header */}
                 <div style={{ marginBottom: '2rem' }}>
                     <h1 style={{
@@ -376,41 +365,15 @@ export default function Products() {
                         {/* Products Grid/List */}
                         {loading ? (
                             <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: viewMode === 'grid'
-                                    ? 'repeat(auto-fill, minmax(280px, 1fr))'
-                                    : '1fr',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '5rem 2rem',
                                 gap: '1.5rem'
                             }}>
-                                {[1, 2, 3, 4, 5, 6].map((n) => (
-                                    <div key={n} style={{
-                                        background: 'white',
-                                        borderRadius: '16px',
-                                        border: '1px solid #f1f5f9',
-                                        overflow: 'hidden',
-                                        height: viewMode === 'grid' ? '400px' : '200px'
-                                    }}>
-                                        <div style={{
-                                            height: viewMode === 'grid' ? '240px' : '100%',
-                                            width: viewMode === 'grid' ? '100%' : '240px',
-                                            background: '#f1f5f9',
-                                            animation: 'shimmer 1.5s infinite linear',
-                                            backgroundSize: '200% 100%',
-                                            backgroundImage: 'linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%)'
-                                        }}></div>
-                                        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1 }}>
-                                            <div style={{ height: '24px', background: '#f1f5f9', borderRadius: '4px', width: '80%' }}></div>
-                                            <div style={{ height: '16px', background: '#f1f5f9', borderRadius: '4px', width: '40%' }}></div>
-                                            <div style={{ marginTop: 'auto', height: '32px', background: '#f1f5f9', borderRadius: '4px', width: '30%' }}></div>
-                                        </div>
-                                    </div>
-                                ))}
-                                <style>{`
-                                    @keyframes shimmer {
-                                        0% { background-position: -200% 0; }
-                                        100% { background-position: 200% 0; }
-                                    }
-                                `}</style>
+                                <div className="loader" style={{ width: '48px', height: '48px' }}></div>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', fontWeight: '500', margin: 0 }}>Loading products...</p>
                             </div>
                         ) : filteredProducts.length > 0 ? (
                             <div style={{

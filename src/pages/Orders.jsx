@@ -251,19 +251,16 @@ export default function Orders() {
             </div>
 
             {loading ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    {[1, 2, 3].map(i => (
-                        <div key={i} style={{
-                            background: 'white', borderRadius: '20px', padding: '2rem',
-                            border: '1px solid #f1f5f9'
-                        }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                                <div style={{ width: '120px', height: '16px', background: 'linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite', borderRadius: '8px' }}></div>
-                                <div style={{ width: '80px', height: '16px', background: 'linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite', borderRadius: '8px' }}></div>
-                            </div>
-                            <div style={{ width: '60%', height: '14px', background: 'linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite', borderRadius: '8px' }}></div>
-                        </div>
-                    ))}
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '5rem 2rem',
+                    gap: '1.5rem'
+                }}>
+                    <div className="loader" style={{ width: '48px', height: '48px' }}></div>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1rem', fontWeight: '500', margin: 0 }}>Loading your orders...</p>
                 </div>
             ) : orders.length === 0 ? (
                 <div style={{
